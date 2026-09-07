@@ -6,14 +6,11 @@ import {
   Quote,
   CheckCircle2,
   Award,
-  PenTool,
-  Copy,
-  Check
+  PenTool
 } from 'lucide-react';
 import {
   getStoredReviews,
-  REVIEW_UPDATE_EVENT,
-  copyReviewLinkToClipboard
+  REVIEW_UPDATE_EVENT
 } from '../utils/reviewStorage';
 import { SubmitReviewModal } from './SubmitReviewModal';
 import { useQuoteModal } from '../context/QuoteModalContext';
@@ -34,7 +31,6 @@ export const ReviewSlider = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [copiedLink, setCopiedLink] = useState(false);
 
   const autoPlayRef = useRef(null);
   const { openQuoteModal } = useQuoteModal();
@@ -125,13 +121,7 @@ export const ReviewSlider = ({
     };
   }, [isAutoPlaying, currentIndex, totalReviews]);
 
-  const handleCopyLink = async () => {
-    const success = await copyReviewLinkToClipboard();
-    if (success) {
-      setCopiedLink(true);
-      setTimeout(() => setCopiedLink(false), 2500);
-    }
-  };
+
 
   // Safe active review resolution
   const activeReview = (totalReviews > 0 && reviews[currentIndex]) ? reviews[currentIndex] : (reviews[0] || null);
@@ -179,30 +169,13 @@ export const ReviewSlider = ({
               Click below to submit your rating and review.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5">
+            <div className="flex items-center justify-center">
               <button
                 onClick={() => setIsReviewModalOpen(true)}
-                className="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-brand-500 to-brand-700 hover:from-brand-600 hover:to-brand-800 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-brand-500 to-brand-700 hover:from-brand-600 hover:to-brand-800 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <PenTool className="w-3.5 h-3.5" />
                 <span>Submit Your Review Now</span>
-              </button>
-
-              <button
-                onClick={handleCopyLink}
-                className="w-full sm:w-auto px-5 py-2.5 bg-navy-800 hover:bg-navy-700 text-slate-200 font-bold text-xs uppercase tracking-wider rounded-xl border border-navy-700 transition-all flex items-center justify-center gap-2 cursor-pointer"
-              >
-                {copiedLink ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400">Link Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5 text-gold-400" />
-                    <span>Copy Review Link</span>
-                  </>
-                )}
               </button>
             </div>
           </div>
