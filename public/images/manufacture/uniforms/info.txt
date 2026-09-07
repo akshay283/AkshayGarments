@@ -1,0 +1,2 @@
+# Add your School & Institutional Uniform photos here
+# Example: uniform-1.jpg, uniform-2.jpg, uniform-3.jpg (Boys sets, Girls sets, primary uniforms)

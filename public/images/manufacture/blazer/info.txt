@@ -1,0 +1,2 @@
+# Add your Blazer photos here
+# Example: blazer-1.jpg, blazer-2.jpg

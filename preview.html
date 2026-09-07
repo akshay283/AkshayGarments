@@ -1,0 +1,2160 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Akshay Garments | Premium School Uniforms & Institutional Apparel</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              300: '#7cc7fb',
+              400: '#36abf7',
+              500: '#0c8fe9',
+              600: '#0171c7',
+              700: '#025ba2',
+              800: '#064d85',
+              900: '#0a406f',
+              950: '#07294a',
+            },
+            navy: {
+              800: '#0e1f38',
+              850: '#0a192f',
+              900: '#061324',
+              950: '#030b17',
+            },
+            gold: {
+              300: '#fde047',
+              400: '#facc15',
+              500: '#eab308',
+              600: '#ca8a04',
+              700: '#a16207',
+            },
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'fade-in': 'fadeIn 0.4s ease-out forwards',
+            'slide-up': 'slideUp 0.35s ease-out forwards',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { opacity: '0', transform: 'translateY(16px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React 18 & Babel CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <!-- Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .bg-hero-pattern {
+      background-image: radial-gradient(rgba(12, 143, 233, 0.12) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+
+    .bg-gradient-mesh {
+      background-color: #061324;
+      background-image:
+        radial-gradient(at 0% 0%, rgba(12, 143, 233, 0.25) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(234, 179, 8, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(2, 91, 162, 0.3) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(6, 77, 133, 0.2) 0px, transparent 50%);
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #printable-catalog,
+      #printable-catalog * {
+        visibility: visible;
+      }
+
+      #printable-catalog {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-brand-500 selection:text-white">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo, useRef } = React;
+
+    // --- DATA CONFIGURATION ---
+    const siteConfig = {
+      companyName: "Akshay Garments",
+      tagline: "School Uniforms & Institutional Apparel Crafted with Precision",
+      shortDesc: "Trusted manufacturer and bulk supplier of premium school uniforms, certified durable fabrics, and custom embroidery for premier schools across India.",
+      contact: {
+        phone: "+91 6301050642",
+        phoneSecondary: "+91 6301050642",
+        whatsapp: "+916301050642",
+        email: "akshaydonthula283@gmail.com",
+        salesEmail: "akshaydonthula283@gmail.com",
+        address: {
+          line1: "Plot No. 1-4-2/B, GeethaNagar",
+          line2: "Backside of LIC office",
+          city: "Jangaon",
+          state: "Telangana",
+          postalCode: "506167",
+          country: "India"
+        },
+        businessHours: "Monday – Saturday: 9:00 AM – 7:30 PM (IST)",
+        sundayHours: "Sunday: By Appointment for School Committees"
+      },
+      socialLinks: {
+        instagram: "https://instagram.com/akshaygarments_uniforms",
+        whatsappDirect: "https://wa.me/916301050642"
+      },
+      stats: [
+        { value: "20+", label: "Years of Craftsmanship" },
+        { value: "85+", label: "Happy Customers & Schools" },
+        { value: "10,000+", label: "Students Clothed Annually" }
+      ]
+    };
+
+    const fabricsData = [
+      {
+        id: "poly-viscose-classic",
+        name: "Poly-Viscose (PV) Super Suiting",
+        shortDesc: "The gold standard for school trousers, skirts, blazers, and pinafores with supreme wrinkle recovery.",
+        material: "Poly-Viscose",
+        composition: "67% Polyester / 33% Viscose",
+        gsm: 240,
+        width: "58 inches",
+        weave: "2/2 Twill Suiting Weave",
+        features: ["Wrinkle Resistant", "Color Fastness (Grade 4.5+)", "High Tear Strength", "Soft Drape", "Pilling Resistant"],
+        durabilityScore: 9.6,
+        breathabilityScore: 8.4,
+        usage: ["Trousers", "Skirts", "Blazers", "Pinafores"],
+        colors: [
+          { name: "Navy Blue", hex: "#0f2347" },
+          { name: "Charcoal Grey", hex: "#374151" },
+          { name: "Bottle Green", hex: "#14422e" },
+          { name: "Maroon", hex: "#6b1426" },
+          { name: "Khaki Beige", hex: "#c4a482" }
+        ],
+        image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop",
+        featured: true
+      },
+      {
+        id: "poly-cotton-oxford",
+        name: "Poly-Cotton (PC) Oxford Weave",
+        shortDesc: "Heavy-duty everyday school shirt fabric offering unmatched all-day crispness and cooling air circulation.",
+        material: "Polyester-Cotton",
+        composition: "65% Polyester / 35% Combed Cotton",
+        gsm: 160,
+        width: "58 inches",
+        weave: "Classic Oxford Basket Weave",
+        features: ["Breathable", "Easy Iron Finish", "Zero Shrinkage (< 1%)", "Sweat Absorbent"],
+        durabilityScore: 9.4,
+        breathabilityScore: 9.0,
+        usage: ["Shirts", "Blouses", "Lab Coats"],
+        colors: [
+          { name: "Crisp White", hex: "#ffffff" },
+          { name: "Sky Blue", hex: "#93c5fd" },
+          { name: "Butter Cream", hex: "#fef3c7" },
+          { name: "Pinstripe Sky", hex: "#bfdbfe" }
+        ],
+        image: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=800&auto=format&fit=crop",
+        featured: true
+      },
+      {
+        id: "cotton-100-combed",
+        name: "100% Combed Premium Cotton",
+        shortDesc: "Natural hypoallergenic cotton engineered for sensitive skin, kindergarten uniforms, and warm climates.",
+        material: "Cotton",
+        composition: "100% Long-Staple Ring-Spun Cotton",
+        gsm: 180,
+        width: "58 inches",
+        weave: "Fine Poplin Weave",
+        features: ["100% Natural Fiber", "Ultra Breathable", "Hypoallergenic", "Super Soft"],
+        durabilityScore: 8.0,
+        breathabilityScore: 9.8,
+        usage: ["Shirts", "Primary Rompers", "House T-Shirts"],
+        colors: [
+          { name: "Pure White", hex: "#ffffff" },
+          { name: "Butter Yellow", hex: "#fef9c3" },
+          { name: "Baby Blue", hex: "#bae6fd" }
+        ],
+        image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=800&auto=format&fit=crop",
+        featured: true
+      },
+      {
+        id: "dry-fit-sports-mesh",
+        name: "Micro-Polyester Dry-Fit Honeycomb",
+        shortDesc: "Moisture-wicking athletic knit fabric engineered for school sports, tracksuits, PT uniforms, and house jerseys.",
+        material: "Polyester",
+        composition: "100% Micro-Filament Polyester with Hex-Mesh",
+        gsm: 170,
+        width: "60 inches",
+        weave: "Interlock Honeycomb Knit",
+        features: ["Moisture Wicking Quick-Dry", "4-Way Stretch", "Anti-Odor UV Protection"],
+        durabilityScore: 9.3,
+        breathabilityScore: 9.9,
+        usage: ["Sportswear", "House T-Shirts", "Tracksuits"],
+        colors: [
+          { name: "Athletic Red", hex: "#dc2626" },
+          { name: "Sapphire Blue", hex: "#2563eb" },
+          { name: "Emerald Green", hex: "#16a34a" },
+          { name: "Sunburst Yellow", hex: "#eab308" }
+        ],
+        image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop",
+        featured: true
+      },
+      {
+        id: "poly-gabardine-blazer",
+        name: "Heavy-Duty Wool-Touch Gabardine",
+        shortDesc: "Premium textured suiting weave designed specifically for structured winter blazers and ceremonial coats.",
+        material: "Poly-Viscose",
+        composition: "70% Polyester / 30% Rayon Viscose with Wool Feel",
+        gsm: 320,
+        width: "58 inches",
+        weave: "Steep Diagonal Gabardine",
+        features: ["Rigid Blazer Structure", "Thermal Insulation", "Stain Repellent"],
+        durabilityScore: 9.8,
+        breathabilityScore: 7.5,
+        usage: ["Blazers", "Overcoats"],
+        colors: [
+          { name: "Royal Navy", hex: "#0a1f44" },
+          { name: "Deep Maroon", hex: "#581825" },
+          { name: "Forest Green", hex: "#064e3b" },
+          { name: "Onyx Black", hex: "#000000" }
+        ],
+        image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=800&auto=format&fit=crop",
+        featured: true
+      },
+      {
+        id: "tartan-plaid-worsted",
+        name: "Yarn-Dyed Plaid Tartan Twill",
+        shortDesc: "Vibrant custom tartan patterns for signature school identity skirts, pinafores, and neckties.",
+        material: "Poly-Viscose",
+        composition: "65% Polyester / 35% Viscose Yarn-Dyed Check",
+        gsm: 230,
+        width: "58 inches",
+        weave: "Yarn-Dyed 2/2 Twill Plaid",
+        features: ["Permanent Pleat Retention", "Vibrant Multi-Color Checks", "Zero Bleed"],
+        durabilityScore: 9.5,
+        breathabilityScore: 8.3,
+        usage: ["Skirts", "Pinafores", "Ties"],
+        colors: [
+          { name: "Red Tartan Plaid", hex: "#991b1b" },
+          { name: "Green Black Watch", hex: "#064e3b" },
+          { name: "Navy Check", hex: "#0f2347" }
+        ],
+        image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop",
+        featured: true
+      }
+    ];
+
+    const uniformModelsData = [
+      {
+        id: "model-boys-formal-classic",
+        name: "Classic Boys Formal Academy Set",
+        category: "boys",
+        schoolLevel: "high",
+        type: "Formal",
+        description: "Tailored formal combination featuring a stiff-collar Oxford button-up shirt, flat-front PV trousers with reinforced pockets, and a jacquard striped school tie.",
+        components: ["Crisp Oxford Shirt", "Poly-Viscose Flat Front Trouser", "Custom Woven Necktie", "School Belt"],
+        recommendedFabric: "Poly-Cotton Oxford (Shirt) + PV Suiting 240 GSM (Trouser)",
+        image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        id: "model-girls-pleated-ensemble",
+        name: "Heritage Girls Knife-Pleat Skirt Ensemble",
+        category: "girls",
+        schoolLevel: "high",
+        type: "Formal",
+        description: "An elegant school ensemble featuring a tailored point-collar blouse with princess seams paired with a permanent knife-pleated tartan or solid suiting skirt.",
+        components: ["School Blouse", "Knife-Pleat Skirt", "Adjustable Cross Tie / Tie", "Cotton Socks"],
+        recommendedFabric: "Poly-Cotton Shirting + Yarn-Dyed Tartan Twill or PV Suiting",
+        image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        id: "model-primary-bib-pinafore",
+        name: "Junior Academy Bib Pinafore & Romper",
+        category: "girls",
+        schoolLevel: "primary",
+        type: "Primary",
+        description: "Child-friendly, easy-to-wear pinafore with adjustable cross-back shoulder straps, side button openings, and comfortable box-pleat styling for primary kids.",
+        components: ["Peter Pan Collar Blouse", "Box Pleat Bib Pinafore", "Inner Bloomers"],
+        recommendedFabric: "100% Combed Cotton Blouse + Heavy Poly-Viscose Pinafore",
+        image: "https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        id: "model-executive-blazer-suit",
+        name: "Presidential Structured School Blazer",
+        category: "unisex",
+        schoolLevel: "high",
+        type: "Formal",
+        description: "Premium single-breasted two-button blazer with structured shoulder pads, satin internal lining, branded metallic or crested buttons, and custom gold-wire bullion crest.",
+        components: ["Structured Blazer", "Bullion Gold Crest Patch", "Metallic Crest Buttons"],
+        recommendedFabric: "Heavy-Duty Wool-Touch Gabardine 320 GSM",
+        image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        id: "model-sports-house-kit",
+        name: "House Athletics Dry-Fit Polo & Track Set",
+        category: "unisex",
+        schoolLevel: "all",
+        type: "Sports",
+        description: "Performance inter-house sports jersey with contrasting sleeve piping, breathable mesh underarms, paired with matching track pants or athletic shorts.",
+        components: ["Dry-Fit House Polo", "Micro-Poly Track Pant", "Sports House Cap"],
+        recommendedFabric: "Micro-Polyester Dry-Fit Honeycomb 170 GSM",
+        image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        id: "model-winter-cardigan-sweater",
+        name: "Heritage V-Neck Knit Pullover",
+        category: "unisex",
+        schoolLevel: "all",
+        type: "Winter",
+        description: "Classic school knit pullover with contrast twin-stripe ribbed neck and cuffs, engineered with anti-pilling cashmilon yarn for lightweight snug warmth.",
+        components: ["V-Neck Pullover / Cardigan", "Lycra Reinforced Ribbing"],
+        recommendedFabric: "Cashmilon Acrylic Soft Knit 380 GSM",
+        image: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=800&auto=format&fit=crop"
+      }
+    ];
+
+    const productsData = [
+      {
+        id: "prod-oxford-school-shirt",
+        name: "Classic Half/Full Sleeve School Shirt",
+        category: "shirts",
+        gender: "unisex",
+        priceRange: "Custom Bulk Quote",
+        shortDesc: "Durable daily school shirt crafted with stiff-fused collar, double-needle armhole stitching, and non-yellowing dye finish.",
+        fabric: "Poly-Cotton Oxford 160 GSM",
+        gsm: "160 GSM",
+        images: ["https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=800&auto=format&fit=crop"],
+        sizes: ["22", "24", "26", "28", "30", "32", "34", "36", "38", "40", "42"],
+        colors: [{ name: "Crisp White", hex: "#ffffff" }, { name: "Sky Blue", hex: "#93c5fd" }, { name: "Butter Cream", hex: "#fef3c7" }],
+        bestseller: true
+      },
+      {
+        id: "prod-pv-school-trouser",
+        name: "Formal Poly-Viscose Pleated & Flat-Front Trouser",
+        category: "trousers",
+        gender: "boys",
+        priceRange: "Custom Bulk Quote",
+        shortDesc: "Tailored school trousers featuring reinforced seat and knee panels, stain-resistant finish, and an expandable waistband.",
+        fabric: "Poly-Viscose Super Suiting 240 GSM",
+        gsm: "240 GSM",
+        images: ["https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=800&auto=format&fit=crop"],
+        sizes: ["24", "26", "28", "30", "32", "34", "36", "38", "40"],
+        colors: [{ name: "Navy Blue", hex: "#0f2347" }, { name: "Charcoal Grey", hex: "#374151" }, { name: "Bottle Green", hex: "#14422e" }, { name: "Khaki", hex: "#c4a482" }],
+        bestseller: true
+      },
+      {
+        id: "prod-knife-pleat-skirt",
+        name: "Permanent Knife-Pleat School Skirt",
+        category: "skirts",
+        gender: "girls",
+        priceRange: "Custom Bulk Quote",
+        shortDesc: "High-grade heat-set pleated skirt available in solid suiting colors and custom tartan school plaid weaves.",
+        fabric: "Yarn-Dyed Tartan Twill / PV Suiting",
+        gsm: "230 GSM",
+        images: ["https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"],
+        sizes: ["20", "22", "24", "26", "28", "30", "32", "34", "36"],
+        colors: [{ name: "Navy Blue", hex: "#0f2347" }, { name: "Red Tartan", hex: "#991b1b" }, { name: "Green Plaid", hex: "#064e3b" }],
+        bestseller: true
+      },
+      {
+        id: "prod-presidential-blazer",
+        name: "Presidential Structured Wool-Touch Blazer",
+        category: "blazers",
+        gender: "unisex",
+        priceRange: "Custom Bulk Quote",
+        shortDesc: "Premium tailored school blazer with structured shoulders, satin lining, bullion embroidery crest, and metallic crest buttons.",
+        fabric: "Heavy-Duty Wool-Touch Gabardine 320 GSM",
+        gsm: "320 GSM",
+        images: ["https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=800&auto=format&fit=crop"],
+        sizes: ["26", "28", "30", "32", "34", "36", "38", "40", "42"],
+        colors: [{ name: "Regal Navy", hex: "#0a1f44" }, { name: "Burgundy", hex: "#581825" }, { name: "Dark Green", hex: "#064e3b" }],
+        bestseller: true
+      },
+      {
+        id: "prod-dryfit-sports-polo",
+        name: "Inter-House Athletic Dry-Fit Polo",
+        category: "sports",
+        gender: "unisex",
+        priceRange: "Custom Bulk Quote",
+        shortDesc: "High-performance sports polo with breathable side mesh inserts and vibrant, non-fading house color sublimation.",
+        fabric: "Micro-Poly Dry-Fit Honeycomb 170 GSM",
+        gsm: "170 GSM",
+        images: ["https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop"],
+        sizes: ["22", "24", "26", "28", "30", "32", "34", "36", "38", "40"],
+        colors: [{ name: "Red House", hex: "#dc2626" }, { name: "Blue House", hex: "#2563eb" }, { name: "Green House", hex: "#16a34a" }, { name: "Yellow House", hex: "#eab308" }],
+        bestseller: true
+      },
+      {
+        id: "prod-custom-school-necktie",
+        name: "Woven Jacquard Custom School Necktie",
+        category: "accessories",
+        gender: "unisex",
+        priceRange: "Custom Bulk Quote",
+        shortDesc: "High-density woven jacquard school necktie with institutional stripes, crest motif, and elastic neckband option.",
+        fabric: "Micro-Polyester Jacquard Weave",
+        gsm: "N/A",
+        images: ["https://images.unsplash.com/photo-1589756823695-278bc923f962?q=80&w=800&auto=format&fit=crop"],
+        sizes: ["Junior Elastic", "Junior Clip-On", "Senior Standard", "Girls Cross Tie"],
+        colors: [{ name: "Navy & Gold", hex: "#0f2347" }, { name: "Maroon & White", hex: "#6b1426" }, { name: "Custom Plaid", hex: "#991b1b" }],
+        bestseller: false
+      }
+    ];
+
+    // Helper for automatic multi-extension candidate resolution
+    function getCategoryCandidates(folderName, basePrefixes = [], explicitImages = [], maxCount = 15) {
+      const list = [...(explicitImages || [])];
+      const extensions = ['jpeg', 'jpg', 'png', 'webp'];
+      const prefixes = Array.isArray(basePrefixes) ? basePrefixes : [basePrefixes];
+
+      prefixes.forEach((prefix) => {
+        if (!prefix) return;
+        for (let i = 1; i <= maxCount; i++) {
+          extensions.forEach((ext) => {
+            const candidate = `/images/manufacture/${folderName}/${prefix}-${i}.${ext}`;
+            if (!list.includes(candidate)) {
+              list.push(candidate);
+            }
+          });
+        }
+      });
+
+      return list;
+    }
+
+    const manufacturingData = [
+      {
+        id: "uniforms",
+        name: "School & Institutional Uniforms",
+        category: "Uniforms",
+        folder: "public/images/manufacture/uniforms/",
+        badge: "Full Institutional Sets",
+        tagline: "Standardized Daily Campus Uniforms",
+        description: "Complete formal school uniform ensembles for Boys & Girls. Includes matching shirts, permanent knife-pleat skirts, pinafores, trousers, house color sports kits, and formal ties.",
+        fabric: "Certified Poly-Viscose / Combed Cotton (180 - 240 GSM)",
+        features: ["Permanent knife pleats & reinforced seams", "Computerized crest embroidery", "OEKO-TEX® non-toxic skin-safe dyes"],
+        images: getCategoryCandidates("uniforms", ["uniform", "uniform-set"]),
+        leadTime: "10-15 Days Bulk",
+        minOrder: "50 Sets"
+      },
+      {
+        id: "custom-event-tshirt",
+        name: "Custom Event T-Shirts",
+        category: "Custom Event T-Shirt",
+        folder: "public/images/manufacture/custom-event-tshirt/",
+        badge: "Sports & Fests",
+        tagline: "Vibrant Printed & Sublimated Youth T-Shirts",
+        description: "Custom-tailored round neck and crew neck t-shirts specifically manufactured for school annual days, sports meets, marathons, cultural fests, science expos, and student societies.",
+        fabric: "100% Ring-Spun Cotton / Micro-Honeycombed Dry-Fit (160 - 200 GSM)",
+        features: ["High-definition multi-color screen & DTF printing", "Breathable sweat-wicking athletic mesh", "Custom Pantone shade matching"],
+        images: getCategoryCandidates("custom-event-tshirt", ["event", "tshirt", "t-shirt"]),
+        leadTime: "5-7 Days Quick Turnaround",
+        minOrder: "30 Pieces"
+      },
+      {
+        id: "corporate-event-tshirt",
+        name: "Corporate Event T-Shirts (Polos)",
+        category: "Corporate Event T-Shirt",
+        folder: "public/images/manufacture/corporate-event-tshirt/",
+        badge: "Executive & Staff",
+        tagline: "Premium Collared Pique Polos",
+        description: "Sophisticated collared polo t-shirts manufactured for corporate sports days, faculty uniforms, annual conferences, alumni meets, brand activations, and promotional campaigns.",
+        fabric: "100% Combed Pique Cotton / Poly-Cotton Honeycomb (220 - 260 GSM)",
+        features: ["Custom jacquard collar & cuff tipping", "High-density micro-embroidery", "Bio-washed pre-shrunk luxury fabric"],
+        images: getCategoryCandidates("corporate-event-tshirt", ["corporate", "polo"]),
+        leadTime: "7-10 Days",
+        minOrder: "25 Pieces"
+      },
+      {
+        id: "blazer",
+        name: "Presidential Institutional Blazers",
+        category: "Blazer",
+        folder: "public/images/manufacture/blazer/",
+        badge: "Ceremonial & Winter",
+        tagline: "Single & Double Breasted Structured Blazers",
+        description: "Handcrafted structured blazers for student councils, graduation convocations, faculty boards, and winter uniform attire. Finished with inner satin lining and padded shoulders.",
+        fabric: "Premium Wool-Touch PV / Cashmilon Heavy Suiting (300 - 340 GSM)",
+        features: ["Gold bullion hand & machine crest embroidery", "Structured shoulder canvas", "Rich Navy, Burgundy, Dark Green shades"],
+        images: getCategoryCandidates("blazer", ["blazer", "coat"]),
+        leadTime: "15-20 Days",
+        minOrder: "20 Pieces"
+      },
+      {
+        id: "school-shirts",
+        name: "Crisp School Shirts",
+        category: "School Shirts",
+        folder: "public/images/manufacture/school-shirts/",
+        badge: "Half & Full Sleeve",
+        tagline: "Formal Oxford & Poplin Campus Shirts",
+        description: "Precision-tailored school shirts crafted from breathable, easy-care cotton blends. Available in classic half-sleeve, full-sleeve, Peter Pan collars for girls, and formal button-downs.",
+        fabric: "67:33 Poly-Cotton / Combed Cotton Oxford (140 - 180 GSM)",
+        features: ["Stay-sharp fused collar stays", "Direct school crest pocket embroidery", "Easy-iron soil-release finish"],
+        images: getCategoryCandidates("school-shirts", ["shirt"]),
+        leadTime: "7-12 Days",
+        minOrder: "50 Pieces"
+      },
+      {
+        id: "pant",
+        name: "School Pants & Trousers",
+        category: "Pant",
+        folder: "public/images/manufacture/pant/",
+        badge: "Formal Trousers",
+        tagline: "Tailored Pleated & Flat-Front Pants",
+        description: "Heavy-duty school trousers engineered to withstand active playground wear while retaining a sharp formal crease. Features reinforced crotches, bar-tacked stress points, and deep pockets.",
+        fabric: "Super Poly-Viscose Trovin / Mill-Made Gabardine (220 - 260 GSM)",
+        features: ["Elasticated expanding waistband for growing students", "Heavy-duty YKK brass zippers", "Extra let-out hem fabric for length"],
+        images: getCategoryCandidates("pant", ["pant", "trouser"]),
+        leadTime: "7-12 Days",
+        minOrder: "50 Pieces"
+      },
+      {
+        id: "vascoat",
+        name: "Waistcoats & Modi Vests (Vascoat)",
+        category: "Vascoat",
+        folder: "public/images/manufacture/vascoat/",
+        badge: "Prefect & Council",
+        tagline: "Formal Sleeveless Waistcoats & Nehru Jackets",
+        description: "Traditional and formal waistcoats (vascoat / sleeveless jackets) tailored for student leadership councils, debate teams, choir ensembles, cultural functions, and school dress uniforms.",
+        fabric: "Fine Poly-Viscose Matty / Jute-Touch Linen Blend (240 - 280 GSM)",
+        features: ["Mandarin collar / V-neck styling", "Front welt pockets with badge pin loop", "Adjustable back buckle strap for custom fit"],
+        images: getCategoryCandidates("vascoat", ["vascoat", "vest", "modi-jacket"]),
+        leadTime: "10-14 Days",
+        minOrder: "25 Pieces"
+      },
+      {
+        id: "short",
+        name: "School Shorts & Bermudas",
+        category: "Short",
+        folder: "public/images/manufacture/short/",
+        badge: "Primary & Middle",
+        tagline: "Durable Comfort Fit Shorts",
+        description: "Practical and hard-wearing school shorts designed specifically for primary and middle school boys. Crafted with comfortable half-elastic backs, belt loops, and reinforced triple-needle seat seams.",
+        fabric: "Heavy Drill Poly-Cotton / High-Twist PV Twill (200 - 240 GSM)",
+        features: ["Triple-needle reinforced seat & crotch seam", "Half-elastic flexible back waistband", "Colorfast deep indigo & khaki dyes"],
+        images: getCategoryCandidates("short", ["short", "bermuda"]),
+        leadTime: "7-10 Days",
+        minOrder: "50 Pieces"
+      },
+      {
+        id: "punjabi",
+        name: "Punjabi Suits & Salwar Kameez",
+        category: "Punjabi",
+        folder: "public/images/manufacture/punjabi/",
+        badge: "Girls Uniform Dress",
+        tagline: "Modest, Comfortable School Punjabi Dress Sets",
+        description: "Modest, comfortable school Punjabi suits and salwar kameez sets for high school and college girls. Features A-line side-slit kameez kurtis, roomy salwars, and matching dyed dupattas.",
+        fabric: "Breathable Combed Poly-Cotton / Modal Soft Weave (160 - 190 GSM)",
+        features: ["Non-transparent, breathable weave", "Reinforced side slits & double armholes", "Custom neck patterns with school contrast piping"],
+        images: getCategoryCandidates("punjabi", ["punjabi", "salwar", "kurti"]),
+        leadTime: "10-14 Days",
+        minOrder: "35 Sets"
+      },
+      {
+        id: "pizama",
+        name: "Pyjamas & Track Bottoms (Pizama)",
+        category: "Pizama",
+        folder: "public/images/manufacture/pizama/",
+        badge: "PE & Daily Comfort",
+        tagline: "Elasticated School Pyjamas & Track Pants",
+        description: "Relaxed school pyjamas, traditional white drill pizamas for yoga and cultural events, and fleece/interlock track pant bottoms with elastic waistbands for physical education.",
+        fabric: "100% Combed Cotton Drill / Poly-Cotton Interlock (180 - 230 GSM)",
+        features: ["Wide high-stretch elastic with inner drawcord", "Deep dual utility pockets", "Pre-shrunk skin-friendly pure cotton & blends"],
+        images: getCategoryCandidates("pizama", ["pizama", "pyjama", "trackpant"]),
+        leadTime: "7-10 Days",
+        minOrder: "40 Pieces"
+      },
+      {
+        id: "college-uniforms",
+        name: "Junior & Degree College Uniforms",
+        category: "College Uniforms",
+        folder: "public/images/manufacture/college-uniforms/",
+        badge: "Degree & Technical Institutes",
+        tagline: "Formal & Professional College Attire",
+        description: "Complete formal uniforms for Junior Colleges, Engineering Institutes, Polytechnic, Management & Degree Colleges. Includes formal shirts, trousers, identity blazers, kurtis, and professional campus wear.",
+        fabric: "High-Twist Poly-Viscose / Rich Combed Cotton (200 - 280 GSM)",
+        features: ["Contemporary slim and regular executive cuts", "College crest embroidery on pocket & blazer chest", "Wrinkle-recovery suiting engineered for long lecture hours"],
+        images: getCategoryCandidates("college-uniforms", ["college", "degree", "institute"]),
+        leadTime: "10-15 Days Bulk",
+        minOrder: "40 Sets"
+      },
+      {
+        id: "doctor-aprons",
+        name: "Doctor Aprons & Medical Lab Coats",
+        category: "Doctor Aprons",
+        folder: "public/images/manufacture/doctor-aprons/",
+        badge: "Healthcare & Lab Attire",
+        tagline: "Clinical Grade White Doctor & Lab Aprons",
+        description: "Precision-tailored clinical aprons and medical lab coats for doctors, medical students, pharmacy colleges, diagnostic labs, nursing staff, and hospital administration.",
+        fabric: "Bleached Heavy Poly-Cotton Drill / Sanitized Poplin (190 - 230 GSM)",
+        features: ["Bleach-resistant, high-temperature wash safe fabric", "Triple utility pockets with pen slot", "Concealed snap buttons & monogram embroidery"],
+        images: getCategoryCandidates("doctor-aprons", ["apron", "labcoat", "doctor"]),
+        leadTime: "5-10 Days Bulk",
+        minOrder: "30 Pieces"
+      },
+      {
+        id: "driver-conductor-dresses",
+        name: "Driver & Conductor Uniforms (Transport Dresses)",
+        category: "Driver & Conductor Dresses",
+        folder: "public/images/manufacture/driver-conductor-dresses/",
+        badge: "Transport & Fleet Attire",
+        tagline: "Heavy-Duty Khaki, Navy & Grey Fleet Uniforms",
+        description: "Heavy-duty, comfortable uniforms and safari suits manufactured for school bus drivers, van drivers, public & private transport conductors, and institutional fleet personnel.",
+        fabric: "Heavy Trovin Suiting / Cotton-Rich Drill Gabardine (240 - 290 GSM)",
+        features: ["Bar-tack reinforced strain points for driving comfort", "Epaulettes for shoulder rank badges / name badge loops", "Deep utility front pockets for ticket books & travel logs"],
+        images: getCategoryCandidates("driver-conductor-dresses", ["driver", "conductor", "safari"]),
+        leadTime: "7-12 Days Bulk",
+        minOrder: "25 Sets"
+      }
+    ];
+
+    // Lightbox Popup Component for preview.html
+    function PreviewLightboxModal({ images, activeIndex, isOpen, onClose, onIndexChange }) {
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (!isOpen) return;
+          if (e.key === 'Escape') onClose();
+          if (e.key === 'ArrowLeft') onIndexChange(activeIndex > 0 ? activeIndex - 1 : images.length - 1);
+          if (e.key === 'ArrowRight') onIndexChange(activeIndex < images.length - 1 ? activeIndex + 1 : 0);
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [isOpen, activeIndex, images]);
+
+      if (!isOpen || !images || images.length === 0) return null;
+
+      const currentImg = images[activeIndex];
+
+      return (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/95 backdrop-blur-md p-4 animate-fade-in"
+          onClick={onClose}
+        >
+          {/* Top Bar */}
+          <div className="absolute top-4 inset-x-4 flex items-center justify-between text-white z-20 pointer-events-none">
+            <div className="bg-navy-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold border border-white/10">
+              {activeIndex + 1} / {images.length} Photos
+            </div>
+            <button
+              onClick={onClose}
+              className="pointer-events-auto p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
+              title="Close (Esc)"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Previous Arrow */}
+          {images.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onIndexChange(activeIndex > 0 ? activeIndex - 1 : images.length - 1);
+              }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-3.5 bg-white/10 hover:bg-brand-600 text-white rounded-full transition-all z-20 backdrop-blur-sm"
+              title="Previous Photo"
+            >
+              ◀
+            </button>
+          )}
+
+          {/* Main High-Res Image */}
+          <div
+            className="max-w-4xl max-h-[85vh] flex flex-col items-center justify-center p-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={currentImg}
+              alt=""
+              className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl animate-fade-in border border-white/10"
+            />
+          </div>
+
+          {/* Next Arrow */}
+          {images.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onIndexChange(activeIndex < images.length - 1 ? activeIndex + 1 : 0);
+              }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-3.5 bg-white/10 hover:bg-brand-600 text-white rounded-full transition-all z-20 backdrop-blur-sm"
+              title="Next Photo"
+            >
+              ▶
+            </button>
+          )}
+        </div>
+      );
+    }
+
+    // CardImageSlider Component for Auto-sliding Garment Photos with Lightbox Popup
+    function CardImageSlider({ images, alt, aspectRatioClass = "aspect-[16/11]" }) {
+      const resolveImagePath = (src) => {
+        if (!src) return '';
+        if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:')) return src;
+        if (typeof window !== 'undefined' && (window.location.protocol === 'file:' || !window.location.protocol)) {
+          if (src.startsWith('/images/')) return './public' + src;
+          if (src.startsWith('images/')) return './public/' + src;
+          if (src.startsWith('/public/')) return '.' + src;
+          if (src.startsWith('public/')) return './' + src;
+          return src;
+        }
+        if (src.startsWith('/public/')) return src.replace('/public', '');
+        if (src.startsWith('public/')) return src.replace('public', '');
+        if (!src.startsWith('/')) return '/' + src;
+        return src;
+      };
+
+      const initialList = Array.isArray(images) && images.length > 0
+        ? images
+        : [images || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop'];
+
+      const [validImages, setValidImages] = useState(initialList);
+      const [currentIndex, setCurrentIndex] = useState(0);
+      const [isHovered, setIsHovered] = useState(false);
+      const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+      useEffect(() => {
+        let isMounted = true;
+        const candidates = Array.isArray(images) && images.length > 0 ? images : ['https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop'];
+        if (candidates.length <= 1) {
+          setValidImages(candidates);
+          return;
+        }
+
+        const verified = [];
+        let pending = candidates.length;
+
+        candidates.forEach((src) => {
+          const resolved = resolveImagePath(src);
+          const img = new Image();
+          img.onload = () => {
+            if (isMounted) {
+              verified.push(src);
+              pending--;
+              if (pending === 0) {
+                setValidImages(verified.length > 0 ? verified : ['https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop']);
+              }
+            }
+          };
+          img.onerror = () => {
+            if (isMounted) {
+              pending--;
+              if (pending === 0) {
+                setValidImages(verified.length > 0 ? verified : ['https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop']);
+              }
+            }
+          };
+          img.src = resolved;
+        });
+
+        return () => { isMounted = false; };
+      }, [JSON.stringify(images)]);
+
+      const total = validImages.length;
+
+      useEffect(() => {
+        if (total <= 1 || isHovered || isLightboxOpen) return;
+        const interval = setInterval(() => {
+          setCurrentIndex((prev) => (prev + 1) % total);
+        }, 3500);
+        return () => clearInterval(interval);
+      }, [total, isHovered, isLightboxOpen]);
+
+      const currentSrc = validImages[currentIndex]
+        ? resolveImagePath(validImages[currentIndex])
+        : 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=800&auto=format&fit=crop';
+
+      return (
+        <>
+          <div
+            className={`relative ${aspectRatioClass} overflow-hidden bg-slate-100 group/slider select-none cursor-pointer`}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onClick={() => setIsLightboxOpen(true)}
+            title="Click to open full photo popup"
+          >
+            <img
+              src={currentSrc}
+              alt={alt}
+              onError={() => {
+                setValidImages((prev) => {
+                  const next = prev.filter((_, idx) => idx !== currentIndex);
+                  return next.length > 0 ? next : ['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=800&auto=format&fit=crop'];
+                });
+              }}
+              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none" />
+
+            {/* Click to Enlarge Badge */}
+            <div className="absolute inset-0 bg-navy-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+              <div className="px-3.5 py-1.5 rounded-full bg-navy-950/85 backdrop-blur-md text-white text-xs font-bold shadow-lg flex items-center gap-1.5 border border-white/20 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                <span>🔍 Click to Enlarge</span>
+              </div>
+            </div>
+
+            {total > 1 && (
+              <>
+                <div className="absolute bottom-2.5 right-2.5 z-10 px-2 py-0.5 rounded-md bg-navy-950/80 backdrop-blur-md text-white text-[10px] font-bold border border-white/10 shadow-sm flex items-center gap-1 pointer-events-none">
+                  <span>{currentIndex + 1}/{total} Photos</span>
+                </div>
+                <button
+                  onClick={(e) => { e.stopPropagation(); setCurrentIndex((prev) => (prev - 1 + total) % total); }}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-navy-950/70 hover:bg-brand-600 text-white flex items-center justify-center opacity-0 group-hover/slider:opacity-100 transition-all shadow-md active:scale-90"
+                >
+                  ◀
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); setCurrentIndex((prev) => (prev + 1) % total); }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-navy-950/70 hover:bg-brand-600 text-white flex items-center justify-center opacity-0 group-hover/slider:opacity-100 transition-all shadow-md active:scale-90"
+                >
+                  ▶
+                </button>
+                <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1 px-2 py-1 rounded-full bg-navy-950/60 backdrop-blur-md border border-white/10">
+                  {validImages.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={(e) => { e.stopPropagation(); setCurrentIndex(idx); }}
+                      className={`rounded-full transition-all ${currentIndex === idx ? 'w-4 h-1 bg-brand-400' : 'w-1.5 h-1.5 bg-white/50'}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          <PreviewLightboxModal
+            images={validImages.map((img) => resolveImagePath(img))}
+            activeIndex={currentIndex}
+            isOpen={isLightboxOpen}
+            onClose={() => setIsLightboxOpen(false)}
+            onIndexChange={(newIdx) => setCurrentIndex(newIdx)}
+          />
+        </>
+      );
+    }
+
+    const testimonialsData = [
+      {
+        name: "Dr. Anirudh Sengupta",
+        role: "Principal & Director",
+        school: "St. Xavier's International School",
+        location: "Ahmedabad, Gujarat",
+        content: "Akshay Garments has transformed our school uniform supply chain. For 6 consecutive years, their fabric durability, color fastness, and on-time bulk deliveries before the academic term have been completely flawless.",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop",
+        rating: 5,
+        studentsCount: "2,400+ Students",
+        tags: ["Uniforms", "School Shirts", "Pants"]
+      },
+      {
+        name: "Sister Mary Margaret",
+        role: "Correspondent & Headmistress",
+        school: "Mount Carmel Convent Senior Secondary",
+        location: "Pune, Maharashtra",
+        content: "Our custom tartan skirts and blazer crests require exact color matching and precision pleating. Akshay Garments matched our 40-year-old heritage pattern perfectly with high-grade Poly-Viscose fabrics that don't fade.",
+        avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop",
+        rating: 5,
+        studentsCount: "1,850+ Students",
+        tags: ["Blazers", "Punjabi", "Vascoat"]
+      },
+      {
+        name: "Col. Rajesh Malhotra (Retd.)",
+        role: "Administrative Officer",
+        school: "Delhi Public Global Academy",
+        location: "Surat, Gujarat",
+        content: "The computerized sizing fit kits and on-campus trial sessions managed by Akshay Garments eliminated 99% of exchange hassles for our admin staff. Their house sportswear dry-fit fabric quality is simply unmatched.",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
+        rating: 5,
+        studentsCount: "3,100+ Students",
+        tags: ["Custom Event T-Shirt", "Shorts", "Pizama"]
+      },
+      {
+        name: "Vikramaditya Rao",
+        role: "Head of Corporate Relations & Events",
+        school: "Apex Tech Conclave & National Sports League",
+        location: "Hyderabad, Telangana",
+        content: "We ordered 1,200 custom collared corporate event polo t-shirts with jacquard collar tipping and embroidered chest branding. The fabric breathability and 6-day rapid delivery exceeded all expectations.",
+        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop",
+        rating: 5,
+        studentsCount: "1,200+ Attendees",
+        tags: ["Corporate Event T-Shirt", "Custom Event T-Shirt"]
+      },
+      {
+        name: "Mrs. Revathi Ramanathan",
+        role: "Senior Academic Coordinator",
+        school: "Vidyashilp Heritage Residential School",
+        location: "Bengaluru, Karnataka",
+        content: "From student council vascoats (waistcoats) to daily salwar kameez and formal trousers, the stitching quality and fabric softness have been exemplary. Our students wear them with pride.",
+        avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop",
+        rating: 5,
+        studentsCount: "1,600+ Students",
+        tags: ["Vascoat", "Punjabi", "School Shirts"]
+      },
+      {
+        name: "Prof. Arvind Kulkarni",
+        role: "Dean of Student Affairs",
+        school: "Somaiya College of Engineering & Arts",
+        location: "Mumbai, Maharashtra",
+        content: "For our annual inter-collegiate cultural fest, Akshay Garments manufactured 3,500 custom vibrant event t-shirts with intricate graphic prints. The print durability was praised by all participants.",
+        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop",
+        rating: 5,
+        studentsCount: "3,500+ Participants",
+        tags: ["Custom Event T-Shirt", "Pizama", "Shorts"]
+      }
+    ];
+
+    const faqsData = [
+      {
+        id: 1,
+        question: "What is your Minimum Order Quantity (MOQ) for custom school uniforms?",
+        answer: "For newly designed custom school uniforms with tailored crest embroidery and dedicated dye-lot fabrics, our standard MOQ is 100 sets (or 200 individual pieces across sizes). For existing standard designs or ongoing re-orders for existing partner schools, we fulfill orders as low as 25-50 pieces."
+      },
+      {
+        id: 2,
+        question: "Do you provide physical fabric swatch kits and sample mockups before bulk production?",
+        answer: "Yes, absolutely! We send a complimentary 'Institutional Swatch Box' containing physical fabric samples (Poly-Viscose, Poly-Cotton, Knits, Tartan twills) with GSM certifications, along with finished sample garments customized with your school crest for committee approval."
+      },
+      {
+        id: 3,
+        question: "How do you handle student sizing and fit trials to avoid exchange hassles?",
+        answer: "We supply our standardized 'Sizing Fit Kits' directly to your school campus prior to the academic year. Our team can also conduct on-site computerized sizing camps where each student is measured, virtually eliminating wrong-size deliveries."
+      },
+      {
+        id: 4,
+        question: "Can you replicate our school's existing heritage plaid, tie pattern, or crest?",
+        answer: "Yes. Our textile engineers use spectrophotometer color-matching to replicate your exact yarn-dyed tartan plaids, suiting shades, and crest embroidery specifications down to the exact thread PMS color code."
+      },
+      {
+        id: 5,
+        question: "What is the typical production and delivery lead time for bulk orders?",
+        answer: "Standard delivery for bulk institutional orders is 3 to 4 weeks from sample and size list sign-off. For mid-session emergency stock replenishment, we maintain backup buffer fabric inventory for all our partner schools for 7-10 day turnaround."
+      },
+      {
+        id: 6,
+        question: "Are your fabrics tested for skin safety and color fastness?",
+        answer: "All fabrics utilized by Akshay Garments strictly comply with OEKO-TEX® Standard 100 non-toxic dyes (safe for sensitive child skin) and boast ISO 105 certified Grade 4+ color fastness against machine washing, sunlight, and sweat."
+      }
+    ];
+
+    // --- MAIN APP COMPONENT ---
+    function App() {
+      const [activePage, setActivePage] = useState('home'); // 'home' | 'models' | 'products' | 'catalog' | 'about' | 'contact' | 'favorites'
+      const [searchQuery, setSearchQuery] = useState('');
+      const [isSearchOpen, setIsSearchOpen] = useState(false);
+      const [favorites, setFavorites] = useState([]);
+      const [openHomeFaq, setOpenHomeFaq] = useState(0);
+      const [quickViewItem, setQuickViewItem] = useState(null);
+      const [quoteModalData, setQuoteModalData] = useState(null);
+      const [lightboxImage, setLightboxImage] = useState(null);
+      const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+
+      // Quote Form state
+      const [formData, setFormData] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        schoolName: '',
+        requirement: 'Full Uniform Supply',
+        quantity: '250',
+        message: ''
+      });
+      const [formSubmitted, setFormSubmitted] = useState(false);
+
+      // Estimator State
+      const [estStudents, setEstStudents] = useState(300);
+      const [estGrade, setEstGrade] = useState('premium');
+      const [estItems, setEstItems] = useState({
+        shirts: true,
+        bottoms: true,
+        blazer: true,
+        sweater: false,
+        sports: true,
+        tie: true
+      });
+
+      // Review Slider State
+      const [reviewSlideIndex, setReviewSlideIndex] = useState(0);
+      const [mfgFilter, setMfgFilter] = useState('all');
+
+      const nextReview = () => {
+        setReviewSlideIndex((prev) => (prev + 1) % testimonialsData.length);
+      };
+      const prevReview = () => {
+        setReviewSlideIndex((prev) => (prev - 1 + testimonialsData.length) % testimonialsData.length);
+      };
+
+      const toggleFavorite = (item) => {
+        if (favorites.some(f => f.id === item.id)) {
+          setFavorites(favorites.filter(f => f.id !== item.id));
+        } else {
+          setFavorites([...favorites, item]);
+        }
+      };
+
+      const handleQuoteSubmit = (e) => {
+        e.preventDefault();
+        setFormSubmitted(true);
+        if (window.confetti) {
+          window.confetti({ particleCount: 75, spread: 60, origin: { y: 0.6 } });
+        }
+      };
+
+      // Estimator math
+      const gradeMultiplier = { standard: 0.9, premium: 1.0, luxury: 1.25 }[estGrade];
+      const basePerStudent = (estItems.shirts ? 650 : 0) + (estItems.bottoms ? 950 : 0) + (estItems.blazer ? 1100 : 0) + (estItems.sweater ? 450 : 0) + (estItems.sports ? 680 : 0) + (estItems.tie ? 160 : 0);
+      const perStudentCost = Math.round(basePerStudent * gradeMultiplier);
+      const totalOrderEstimate = perStudentCost * estStudents;
+
+      const navItems = [
+        { id: 'home', label: 'Home' },
+        { id: 'catalog', label: 'What We Manufacture' },
+        { id: 'about', label: 'About Us' },
+        { id: 'contact', label: 'Contact' },
+      ];
+
+      return (
+        <div className="min-h-screen flex flex-col justify-between">
+
+          {/* Top Info Bar */}
+          <div className="bg-navy-950 text-slate-300 text-xs py-2 px-4 border-b border-navy-900 hidden sm:block">
+            <div className="max-w-7xl mx-auto flex justify-between items-center">
+              <div className="flex items-center gap-4">
+                <span className="text-gold-400 font-bold">✨ Direct Bulk Uniform Supply to 85+ Schools</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <a href={`tel:${siteConfig.contact.phone}`} className="hover:text-white">📞 {siteConfig.contact.phone}</a>
+                <span className="text-slate-600">|</span>
+                <a href={`mailto:${siteConfig.contact.email}`} className="hover:text-white">✉️ {siteConfig.contact.email}</a>
+                <span className="text-slate-600">|</span>
+                <a href={siteConfig.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-white text-pink-300 font-medium">📸 @akshaygarments_uniforms</a>
+              </div>
+            </div>
+          </div>
+
+          {/* Sticky Navbar */}
+          <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs py-3 px-4 sm:px-6">
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+
+              {/* Brand Logo */}
+              <div onClick={() => setActivePage('home')} className="flex items-center gap-2.5 cursor-pointer">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-600 to-navy-900 flex items-center justify-center text-white font-black text-xl shadow-md">
+                  AG
+                </div>
+                <div>
+                  <div className="font-display font-black text-xl sm:text-2xl text-navy-950 tracking-tight leading-none">
+                    AKSHAY <span className="text-brand-600">GARMENTS</span>
+                  </div>
+                  <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                    School Uniforms & Apparel
+                  </div>
+                </div>
+              </div>
+
+              {/* Navigation Links */}
+              <nav className="hidden lg:flex items-center space-x-1">
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setActivePage(item.id)}
+                    className={`px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${activePage === item.id
+                      ? 'bg-brand-50 text-brand-600 shadow-2xs font-extrabold'
+                      : 'text-slate-700 hover:text-brand-600 hover:bg-slate-50'
+                      }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
+
+              {/* Actions */}
+              <div className="flex items-center gap-2.5">
+                <button
+                  onClick={() => setIsSearchOpen(true)}
+                  className="p-2 text-slate-600 hover:text-brand-600 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-semibold flex items-center gap-1.5"
+                >
+                  <span>🔍</span>
+                  <span className="hidden sm:inline">Search (Ctrl+K)</span>
+                </button>
+
+                <button
+                  onClick={() => setActivePage('favorites')}
+                  className="relative p-2 text-slate-700 hover:text-red-500 bg-slate-100 rounded-xl transition-colors"
+                  title="Saved Wishlist"
+                >
+                  <span>❤️</span>
+                  {favorites.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                      {favorites.length}
+                    </span>
+                  )}
+                </button>
+
+                <button
+                  onClick={() => setQuoteModalData({ title: 'School Quote Request', type: 'bulk' })}
+                  className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md transition-all"
+                >
+                  Request Quote
+                </button>
+              </div>
+
+            </div>
+          </header>
+
+          {/* MAIN PAGES ROUTER */}
+          <main className="flex-1">
+
+            {/* --- HOME PAGE --- */}
+            {activePage === 'home' && (
+              <div className="space-y-16 sm:space-y-24 pb-16">
+
+                {/* Hero Section */}
+                <section className="relative bg-navy-950 text-white pt-12 pb-20 lg:pt-16 lg:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
+                  <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+                    <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-900 border border-gold-500/30 text-gold-400 text-xs font-bold uppercase tracking-wider">
+                        ✨ Institutional Uniform Manufacturer Since 2011
+                      </div>
+
+                      <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white leading-tight">
+                        Uniforms That Define <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-sky-300 to-gold-400">Every School</span>
+                      </h1>
+
+                      <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl mx-auto lg:mx-0">
+                        Premium school uniforms, quality fabrics and carefully crafted designs for schools, students and families. Certified durable weaves, double-lock stitching, and on-time institutional bulk supply.
+                      </p>
+
+                      <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <button
+                          onClick={() => setActivePage('products')}
+                          className="w-full sm:w-auto px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all"
+                        >
+                          Explore Uniforms →
+                        </button>
+                        <button
+                          onClick={() => setQuoteModalData({ title: 'Institutional Bulk Quote', type: 'bulk' })}
+                          className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all"
+                        >
+                          Request a Quote 📋
+                        </button>
+                      </div>
+
+                      {/* Stat Counters */}
+                      <div className="pt-6 border-t border-navy-800 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
+                        {siteConfig.stats.map((s, idx) => (
+                          <div key={idx}>
+                            <div className="font-display font-black text-xl sm:text-2xl text-gold-400">{s.value}</div>
+                            <div className="text-[11px] text-slate-400">{s.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="lg:col-span-5 relative">
+                      <div className="rounded-3xl overflow-hidden border-2 border-navy-800 shadow-2xl aspect-[4/5] bg-navy-900">
+                        <img
+                          src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=1000&auto=format&fit=crop"
+                          alt="School uniforms"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+
+                  </div>
+                </section>
+
+                {/* Section A: Why Choose Us */}
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="text-center max-w-2xl mx-auto mb-12">
+                    <span className="text-xs font-bold text-brand-600 uppercase tracking-wider">The Akshay Garments Distinction</span>
+                    <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-navy-950 mt-1">
+                      Why Premier Schools & Families Trust Us
+                    </h2>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {[
+                      { icon: "🛡️", title: "Premium Quality Fabrics", desc: "OEKO-TEX® non-toxic dyes and high-tensile Poly-Viscose & Combed Cotton engineered for 300+ active school days." },
+                      { icon: "✂️", title: "Custom School Designs", desc: "Computerized coat-of-arms crest embroidery, customized tartan plaids, and tailored piping matching your heritage." },
+                      { icon: "📐", title: "Consistent Campus Sizing", desc: "Complimentary Sizing Fit Kits and on-campus trial camps that eliminate wrong-size exchanges." },
+                      { icon: "🏫", title: "Bulk School Orders", desc: "Supplying over 10,000 garments annually to 85+ premier educational institutions across India." },
+                      { icon: "🏷️", title: "Competitive Pricing", desc: "Manufacturer-direct wholesale pricing without middleman markups, maximizing value for schools." },
+                      { icon: "🚚", title: "Reliable Supply", desc: "Strict adherence to academic calendar timelines with backup buffer inventory for mid-term admissions." }
+                    ].map((feat, idx) => (
+                      <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all space-y-3">
+                        <div className="text-3xl">{feat.icon}</div>
+                        <h3 className="font-display font-bold text-lg text-navy-950">{feat.title}</h3>
+                        <p className="text-xs text-slate-600 leading-relaxed">{feat.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Section A.5: What We Manufacture Showcase */}
+                <section className="bg-slate-100/80 py-16 px-4 sm:px-6 lg:px-8 border-y border-slate-200">
+                  <div className="max-w-7xl mx-auto space-y-8">
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                      <div>
+                        <span className="text-xs font-bold text-brand-600 uppercase tracking-wider">Core Apparel Production</span>
+                        <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-navy-950 mt-1">
+                          What We Manufacture
+                        </h2>
+                        <p className="text-slate-600 text-xs sm:text-sm mt-1">
+                          Explore our 13 institutional, college, medical & event apparel lines manufactured with certified fabrics and precision stitching.
+                        </p>
+                      </div>
+                      <button onClick={() => setActivePage('catalog')} className="text-xs font-bold text-brand-600 hover:underline">
+                        View Full 13-Item Catalog →
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {manufacturingData.slice(0, 6).map((mfg) => (
+                        <div key={mfg.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all flex flex-col justify-between">
+                          <div className="relative bg-slate-100 overflow-hidden">
+                            <CardImageSlider
+                              images={mfg.images || [mfg.image]}
+                              alt={mfg.name}
+                              aspectRatioClass="aspect-[16/10]"
+                            />
+                            <span className="absolute top-3 left-3 px-2.5 py-1 bg-navy-950/80 backdrop-blur-md text-gold-400 text-[10px] font-bold rounded-lg uppercase z-10 pointer-events-none">
+                              {mfg.badge}
+                            </span>
+                            <span className="absolute top-3 right-3 px-2 py-1 bg-white/95 text-slate-800 text-[10px] font-bold rounded-lg uppercase shadow-xs z-10 pointer-events-none">
+                              ⚡ {mfg.leadTime}
+                            </span>
+                          </div>
+                          <div className="p-5 space-y-3">
+                            <div>
+                              <span className="text-[10px] font-bold text-brand-600 uppercase tracking-wider">{mfg.category}</span>
+                              <h4 className="font-display font-bold text-base text-navy-950 mt-0.5">{mfg.name}</h4>
+                              <p className="text-xs text-slate-500 line-clamp-2 mt-1">{mfg.description}</p>
+                            </div>
+                            <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                              <button onClick={() => setActivePage('catalog')} className="text-xs font-bold text-brand-600 hover:underline">
+                                View Specs →
+                              </button>
+                              <button onClick={() => setQuoteModalData({ title: mfg.name, type: 'manufacturing' })} className="px-3 py-1.5 bg-navy-950 hover:bg-brand-600 text-white font-bold text-xs rounded-lg transition-colors">
+                                Inquire Quote
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                {/* Section B: Featured Uniform Models */}
+                <section className="bg-slate-100/70 py-16 px-4 sm:px-6 lg:px-8 border-y border-slate-200">
+                  <div className="max-w-7xl mx-auto space-y-8">
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                      <div>
+                        <span className="text-xs font-bold text-navy-800 uppercase tracking-wider">Standardized Ensembles</span>
+                        <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-navy-950 mt-1">
+                          Featured School Uniform Models
+                        </h2>
+                      </div>
+                      <button onClick={() => setActivePage('models')} className="text-xs font-bold text-brand-600 hover:underline">
+                        Explore All Models →
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {uniformModelsData.slice(0, 3).map((model) => (
+                        <div key={model.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all flex flex-col justify-between">
+                          <div className="aspect-[4/3] bg-slate-100 overflow-hidden">
+                            <img src={model.image} alt={model.name} className="w-full h-full object-cover hover:scale-105 transition-transform" />
+                          </div>
+                          <div className="p-5 space-y-3">
+                            <span className="text-[10px] font-bold uppercase px-2 py-0.5 bg-navy-950 text-gold-400 rounded">
+                              {model.type} Uniform
+                            </span>
+                            <h4 className="font-display font-bold text-base text-navy-950">{model.name}</h4>
+                            <p className="text-xs text-slate-500 line-clamp-2">{model.description}</p>
+                            <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                              <button onClick={() => setQuickViewItem(model)} className="text-xs font-bold text-brand-600">
+                                View Details →
+                              </button>
+                              <button onClick={() => setQuoteModalData({ title: model.name, type: 'uniform' })} className="px-3 py-1.5 bg-navy-950 text-white text-xs font-bold rounded-lg">
+                                Quote
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+
+
+                {/* Section E: How We Work */}
+                <section className="bg-slate-100/70 py-16 px-4 sm:px-6 lg:px-8 border-y border-slate-200">
+                  <div className="max-w-7xl mx-auto text-center space-y-12">
+                    <div>
+                      <span className="text-xs font-bold text-brand-600 uppercase tracking-wider">Smooth Workflow</span>
+                      <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-navy-950 mt-1">
+                        How We Partner With Schools
+                      </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+                      {[
+                        { num: "01", title: "Choose Fabric", desc: "Select certified Poly-Cotton, Matty, Cotton, PC, or Sports." },
+                        { num: "02", title: "Select Design", desc: "Customize school crest embroidery, pleats or Elastic." },
+                        { num: "03", title: "Confirm Sizing", desc: "Use on-campus trial fit kits to finalize size rosters accurately." },
+                        { num: "04", title: "Production & Delivery", desc: "CAD automated cutting, double-stitch sewing, and doorstep fulfillment." }
+                      ].map((step, idx) => (
+                        <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 space-y-2">
+                          <div className="text-2xl font-black text-brand-600 font-display">{step.num}</div>
+                          <h4 className="font-display font-bold text-base text-navy-950">{step.title}</h4>
+                          <p className="text-xs text-slate-600">{step.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                {/* Interactive Estimator */}
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="bg-navy-950 rounded-3xl p-6 sm:p-10 text-white border border-navy-800 shadow-2xl space-y-6">
+                    <div>
+                      <span className="text-xs font-bold text-gold-400 uppercase tracking-wider">Budget Estimator</span>
+                      <h3 className="font-display font-bold text-2xl sm:text-3xl mt-1">
+                        Institutional Uniform Cost Calculator
+                      </h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                      <div className="lg:col-span-7 space-y-5 text-xs">
+                        <div>
+                          <div className="flex justify-between font-bold mb-1">
+                            <span>Student Count:</span>
+                            <span className="text-brand-400 text-sm">{estStudents} Students</span>
+                          </div>
+                          <input
+                            type="range"
+                            min="50"
+                            max="2000"
+                            step="50"
+                            value={estStudents}
+                            onChange={(e) => setEstStudents(Number(e.target.value))}
+                            className="w-full accent-brand-500"
+                          />
+                        </div>
+
+                        <div>
+                          <span className="font-bold block mb-2">Fabric Quality Tier:</span>
+                          <div className="grid grid-cols-3 gap-2">
+                            {['standard', 'premium', 'luxury'].map((tier) => (
+                              <button
+                                key={tier}
+                                onClick={() => setEstGrade(tier)}
+                                className={`p-2 rounded-xl border text-center uppercase font-bold text-[11px] ${estGrade === tier ? 'bg-brand-600 border-brand-400 text-white' : 'bg-navy-900 border-navy-800 text-slate-400'
+                                  }`}
+                              >
+                                {tier}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div>
+                          <span className="font-bold block mb-2">Included Items:</span>
+                          <div className="grid grid-cols-2 gap-2">
+                            {Object.entries({
+                              shirts: '2x Shirts',
+                              bottoms: '2x Trousers/Skirts',
+                              blazer: '1x Blazer',
+                              sweater: '1x Sweater',
+                              sports: '1x Sports Kit',
+                              tie: '1x Tie & Belt'
+                            }).map(([key, label]) => (
+                              <label key={key} className="flex items-center gap-2 p-2 bg-navy-900 rounded-lg cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={estItems[key]}
+                                  onChange={() => setEstItems({ ...estItems, [key]: !estItems[key] })}
+                                  className="accent-brand-500"
+                                />
+                                <span>{label}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="lg:col-span-5 bg-navy-900 p-6 rounded-2xl border border-navy-800 space-y-4">
+                        <div className="text-xs text-slate-400 font-bold uppercase">Estimated Bulk Package</div>
+                        <div>
+                          <div className="text-xs text-slate-400">Total Estimated Garments:</div>
+                          <div className="text-2xl font-black text-brand-400">{(Object.values(estItems).filter(Boolean).length * estStudents * 2).toLocaleString('en-IN')} pieces</div>
+                        </div>
+                        <div className="pt-3 border-t border-navy-800">
+                          <div className="text-xs text-gold-400 font-bold">Wholesale Pricing:</div>
+                          <div className="text-xl font-bold text-white">Manufacturer Direct Bulk Rates</div>
+                          <div className="text-[10px] text-slate-400 mt-1">*Custom tender rates based on volume and crest embroidery.</div>
+                        </div>
+                        <button
+                          onClick={() => setQuoteModalData({ title: `Bulk Tender for ${estStudents} Students`, type: 'bulk' })}
+                          className="w-full py-3 bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold text-xs uppercase rounded-xl"
+                        >
+                          Request Official Tender Quote 📑
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Section G: Bulk Orders CTA */}
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="bg-gradient-mesh text-white p-8 sm:p-14 rounded-3xl border border-navy-800 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="space-y-2 max-w-xl">
+                      <h3 className="font-display font-extrabold text-2xl sm:text-3xl">
+                        Looking for uniforms for your entire school?
+                      </h3>
+                      <p className="text-slate-300 text-xs sm:text-sm">
+                        We work with schools and institutions to provide customized uniforms, certified fabrics, sizing camps, and doorstep bulk fulfillment.
+                      </p>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                      <button
+                        onClick={() => setQuoteModalData({ title: 'School Bulk Order Request', type: 'bulk' })}
+                        className="px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs uppercase rounded-xl shadow-md"
+                      >
+                        Request School Quote
+                      </button>
+                      <button
+                        onClick={() => setActivePage('contact')}
+                        className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs uppercase rounded-xl"
+                      >
+                        Contact Us
+                      </button>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Section H: Review Slides Carousel */}
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="bg-gradient-to-b from-slate-900 via-navy-950 to-navy-900 text-white p-8 sm:p-12 rounded-3xl border border-navy-800 shadow-2xl space-y-8 relative overflow-hidden">
+                    <div className="text-center max-w-2xl mx-auto space-y-2">
+                      <span className="text-xs font-bold text-gold-400 uppercase tracking-wider">Verified Testimonials</span>
+                      <h3 className="font-display font-extrabold text-2xl sm:text-4xl text-white">
+                        What Principals & Institutions Say
+                      </h3>
+                      <p className="text-slate-300 text-xs sm:text-sm">
+                        Loved by over 85+ premier educational institutions, sports leagues, and corporate partners across India.
+                      </p>
+                    </div>
+
+                    {/* Review Slide Card */}
+                    <div className="max-w-3xl mx-auto bg-navy-900/90 border border-navy-700/80 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1 text-gold-400">
+                          {[...Array(testimonialsData[reviewSlideIndex].rating || 5)].map((_, i) => (
+                            <span key={i}>★</span>
+                          ))}
+                          <span className="ml-2 text-xs font-bold text-gold-400 bg-gold-500/10 px-2 py-0.5 rounded-full border border-gold-500/30">
+                            5.0 Verified
+                          </span>
+                        </div>
+                        <span className="text-xs text-slate-400 font-mono">
+                          {reviewSlideIndex + 1} / {testimonialsData.length}
+                        </span>
+                      </div>
+
+                      <blockquote className="text-sm sm:text-base text-slate-200 italic leading-relaxed">
+                        "{testimonialsData[reviewSlideIndex].content}"
+                      </blockquote>
+
+                      {testimonialsData[reviewSlideIndex].tags && (
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                          {testimonialsData[reviewSlideIndex].tags.map((t, idx) => (
+                            <span key={idx} className="text-[10px] font-semibold text-brand-300 bg-brand-950 px-2 py-0.5 rounded border border-brand-500/30">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="pt-4 border-t border-navy-800 flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={testimonialsData[reviewSlideIndex].avatar}
+                            alt={testimonialsData[reviewSlideIndex].name}
+                            className="w-12 h-12 rounded-xl object-cover border-2 border-brand-500"
+                          />
+                          <div>
+                            <div className="font-display font-bold text-sm text-white">{testimonialsData[reviewSlideIndex].name}</div>
+                            <div className="text-xs text-brand-400">{testimonialsData[reviewSlideIndex].role} • {testimonialsData[reviewSlideIndex].school}</div>
+                            <div className="text-[10px] text-slate-400">{testimonialsData[reviewSlideIndex].location} ({testimonialsData[reviewSlideIndex].studentsCount})</div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={prevReview}
+                            className="p-2.5 rounded-xl bg-navy-800 hover:bg-brand-600 text-white transition-colors"
+                            aria-label="Previous review"
+                          >
+                            ◀
+                          </button>
+                          <button
+                            onClick={nextReview}
+                            className="p-2.5 rounded-xl bg-navy-800 hover:bg-brand-600 text-white transition-colors"
+                            aria-label="Next review"
+                          >
+                            ▶
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Indicator Dots */}
+                    <div className="flex justify-center gap-2">
+                      {testimonialsData.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setReviewSlideIndex(i)}
+                          className={`rounded-full transition-all ${reviewSlideIndex === i ? 'w-6 h-2 bg-brand-500' : 'w-2 h-2 bg-navy-700'
+                            }`}
+                        />
+                      ))}
+                    </div>
+
+                  </div>
+                </section>
+
+                {/* Section I: Frequently Asked Questions (Q&A) */}
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="bg-slate-50/90 rounded-3xl p-6 sm:p-10 lg:p-12 border border-slate-200/80 shadow-sm">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+                      {/* Left: Heading & Consultation */}
+                      <div className="lg:col-span-5 space-y-6 flex flex-col justify-between">
+                        <div>
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-100 text-brand-700 text-xs font-bold uppercase tracking-wider mb-3">
+                            <span>❓ Got Questions? We Have Answers</span>
+                          </div>
+
+                          <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-navy-950 tracking-tight">
+                            Frequently Asked Questions
+                          </h2>
+
+                          <p className="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
+                            Everything you need to know about our institutional uniform manufacturing, custom fabrics, minimum order quantities, and campus sizing trials.
+                          </p>
+                        </div>
+
+                        {/* Quick Consultation Card */}
+                        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-lg">
+                              💬
+                            </div>
+                            <div>
+                              <h4 className="font-display font-bold text-sm text-navy-950">Have a Specific Query?</h4>
+                              <p className="text-xs text-slate-500">Speak directly with our uniform specialists</p>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col sm:flex-row gap-2 pt-1">
+                            <a
+                              href="https://wa.me/919999999999?text=Hello%20Akshay%20Garments,%20I%20have%20a%20question%20about%20school%20uniform%20manufacturing."
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-sm text-center"
+                            >
+                              <span>📱 WhatsApp Us</span>
+                            </a>
+                            <button
+                              onClick={() => setActivePage('contact')}
+                              className="flex-1 py-2.5 px-3 bg-navy-950 hover:bg-brand-600 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                            >
+                              <span>📞 Contact Team</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right: Accordion Items */}
+                      <div className="lg:col-span-7 space-y-3">
+                        {faqsData.map((faq, idx) => {
+                          const isOpen = openHomeFaq === idx;
+                          return (
+                            <div
+                              key={faq.id || idx}
+                              className={`rounded-2xl border transition-all duration-200 overflow-hidden ${isOpen
+                                  ? 'bg-white border-brand-500/80 shadow-md ring-1 ring-brand-500/20'
+                                  : 'bg-white/80 hover:bg-white border-slate-200 hover:border-slate-300'
+                                }`}
+                            >
+                              <button
+                                onClick={() => setOpenHomeFaq(isOpen ? -1 : idx)}
+                                className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 select-none"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md transition-colors ${isOpen ? 'bg-brand-100 text-brand-700' : 'bg-slate-100 text-slate-500'
+                                    }`}>
+                                    Q{idx + 1}
+                                  </span>
+                                  <span className={`font-display font-bold text-sm sm:text-base transition-colors ${isOpen ? 'text-brand-900' : 'text-navy-950 hover:text-brand-600'
+                                    }`}>
+                                    {faq.question}
+                                  </span>
+                                </div>
+                                <div className={`p-1.5 rounded-full transition-transform duration-200 shrink-0 ${isOpen ? 'bg-brand-50 text-brand-600 rotate-180' : 'bg-slate-100 text-slate-400'
+                                  }`}>
+                                  ▼
+                                </div>
+                              </button>
+
+                              {isOpen && (
+                                <div className="px-4 pb-5 sm:px-5 sm:pb-5 pt-0 animate-fade-in text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100/80 mt-1">
+                                  <div className="pt-3">
+                                    {faq.answer}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                    </div>
+                  </div>
+                </section>
+
+              </div>
+            )}
+
+            {/* --- WHAT WE MANUFACTURE & DIGITAL CATALOG PAGE --- */}
+            {activePage === 'catalog' && (
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+
+                {/* Top Header Banner */}
+                <div className="bg-gradient-to-r from-navy-950 via-navy-900 to-brand-950 text-white p-8 sm:p-14 rounded-3xl space-y-4 relative overflow-hidden shadow-2xl">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-400 text-xs font-bold uppercase tracking-wider">
+                    <span>✂️ Master Apparel Production Portfolio</span>
+                  </div>
+                  <h1 className="font-display font-extrabold text-3xl sm:text-5xl text-white">What We Manufacture</h1>
+                  <p className="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
+                    Explore our 13 institutional, college, medical, transport and event garment manufacturing lines. Engineered with certified fabrics, reinforced seams, and direct manufacturer pricing.
+                  </p>
+                  <div className="flex flex-wrap gap-3 pt-3">
+                    <button onClick={() => setQuoteModalData({ title: 'Institutional Bulk Manufacturing Order', type: 'catalog' })} className="px-6 py-3 bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold text-xs uppercase rounded-xl shadow-lg transition-all">
+                      ⚡ Request Institutional Quote
+                    </button>
+                    <a href={`https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent('Hello Akshay Garments! I would like to inquire about bulk manufacturing uniforms/apparel for our institution.')}`} target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase rounded-xl shadow-md transition-all flex items-center gap-1.5">
+                      <span>💬 Chat on WhatsApp</span>
+                    </a>
+                  </div>
+                </div>
+
+                {/* Filter Tabs */}
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div>
+                      <span className="text-xs font-bold text-brand-600 uppercase tracking-wider">Institutional Lines</span>
+                      <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-navy-950 mt-1">
+                        Our 13 Core Manufactured Categories
+                      </h2>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { id: 'all', label: 'All 13 Lines' },
+                        { id: 'school-college', label: 'School & College Uniforms' },
+                        { id: 'institutional-staff', label: 'Medical Aprons & Drivers' },
+                        { id: 'tshirts', label: 'Event & Polo T-Shirts' },
+                        { id: 'blazer-vascoat', label: 'Blazers & Waistcoats' },
+                        { id: 'bottoms', label: 'Pants, Shorts & Pizama' },
+                        { id: 'ethnic', label: 'Punjabi Dress Sets' }
+                      ].map((cat) => (
+                        <button
+                          key={cat.id}
+                          onClick={() => setMfgFilter(cat.id)}
+                          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${mfgFilter === cat.id
+                            ? 'bg-navy-950 text-white shadow-md'
+                            : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                            }`}
+                        >
+                          {cat.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 13 Items Card Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {manufacturingData
+                      .filter((item) => {
+                        if (mfgFilter === 'all') return true;
+                        if (mfgFilter === 'school-college') return ['uniforms', 'college-uniforms', 'school-shirts'].includes(item.id);
+                        if (mfgFilter === 'institutional-staff') return ['doctor-aprons', 'driver-conductor-dresses'].includes(item.id);
+                        if (mfgFilter === 'tshirts') return ['custom-event-tshirt', 'corporate-event-tshirt'].includes(item.id);
+                        if (mfgFilter === 'blazer-vascoat') return ['blazer', 'vascoat'].includes(item.id);
+                        if (mfgFilter === 'bottoms') return ['pant', 'short', 'pizama'].includes(item.id);
+                        if (mfgFilter === 'ethnic') return ['punjabi'].includes(item.id);
+                        return true;
+                      })
+                      .map((item) => (
+                        <div
+                          key={item.id}
+                          className="bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
+                        >
+                          <div>
+                            <div className="relative bg-slate-100 overflow-hidden">
+                              <CardImageSlider
+                                images={item.images || [item.image]}
+                                alt={item.name}
+                                aspectRatioClass="aspect-[16/11]"
+                              />
+                              <span className="absolute top-3 left-3 px-3 py-1 bg-navy-950/90 backdrop-blur-md text-gold-400 text-[10px] font-bold rounded-lg uppercase border border-navy-800 z-10 pointer-events-none">
+                                {item.badge}
+                              </span>
+                              <span className="absolute top-3 right-3 px-2.5 py-1 bg-white/95 backdrop-blur-md text-slate-800 text-[10px] font-bold rounded-lg uppercase shadow-xs z-10 pointer-events-none">
+                                ⚡ {item.leadTime}
+                              </span>
+                            </div>
+
+                            <div className="p-6 space-y-3">
+                              <div>
+                                <span className="text-[10px] font-bold text-brand-600 uppercase tracking-wider">{item.category}</span>
+                                <h3 className="font-display font-bold text-lg text-navy-950 mt-0.5">{item.name}</h3>
+                                <p className="text-xs text-slate-500 font-medium">{item.tagline}</p>
+                              </div>
+
+                              <p className="text-xs text-slate-600 leading-relaxed">{item.description}</p>
+
+                              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 text-xs">
+                                <div className="text-[10px] uppercase font-bold text-slate-400">Certified Fabric:</div>
+                                <div className="font-semibold text-navy-900 text-xs mt-0.5">🧵 {item.fabric}</div>
+                              </div>
+
+                              <div className="space-y-1 pt-1">
+                                {item.features.map((feat, idx) => (
+                                  <div key={idx} className="flex items-center gap-1.5 text-xs text-slate-600">
+                                    <span className="text-emerald-500 font-bold">✓</span>
+                                    <span>{feat}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="p-6 pt-3 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
+                            <span className="text-[11px] text-slate-500">Min Order: <strong>{item.minOrder}</strong></span>
+                            <button
+                              onClick={() => setQuoteModalData({
+                                title: `${item.name} (${item.category})`,
+                                type: 'manufacturing'
+                              })}
+                              className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs uppercase rounded-xl shadow-sm transition-all"
+                            >
+                              Request Quote →
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                {/* Review Slides Carousel */}
+                <div className="bg-gradient-to-b from-slate-900 via-navy-950 to-navy-900 text-white p-8 sm:p-12 rounded-3xl border border-navy-800 shadow-2xl space-y-8 relative overflow-hidden">
+                  <div className="text-center max-w-2xl mx-auto space-y-2">
+                    <span className="text-xs font-bold text-gold-400 uppercase tracking-wider">Client Reviews & Testimonials</span>
+                    <h3 className="font-display font-extrabold text-2xl sm:text-4xl text-white">
+                      Loved by 85+ Schools & Brands
+                    </h3>
+                    <p className="text-slate-300 text-xs sm:text-sm">
+                      Read what principals, administrators, and event organizers say about Akshay Garments.
+                    </p>
+                  </div>
+
+                  {/* Active Review Slide */}
+                  <div className="max-w-3xl mx-auto bg-navy-900/90 border border-navy-700/80 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1 text-gold-400">
+                        {[...Array(testimonialsData[reviewSlideIndex].rating || 5)].map((_, i) => (
+                          <span key={i}>★</span>
+                        ))}
+                        <span className="ml-2 text-xs font-bold text-gold-400 bg-gold-500/10 px-2 py-0.5 rounded-full border border-gold-500/30">
+                          5.0 Rating
+                        </span>
+                      </div>
+                      <span className="text-xs text-slate-400 font-mono">
+                        {reviewSlideIndex + 1} / {testimonialsData.length}
+                      </span>
+                    </div>
+
+                    <blockquote className="text-sm sm:text-base text-slate-200 italic leading-relaxed">
+                      "{testimonialsData[reviewSlideIndex].content}"
+                    </blockquote>
+
+                    {testimonialsData[reviewSlideIndex].tags && (
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        <span className="text-[10px] uppercase font-bold text-slate-400">Manufactured Items:</span>
+                        {testimonialsData[reviewSlideIndex].tags.map((t, idx) => (
+                          <span key={idx} className="text-[10px] font-semibold text-brand-300 bg-brand-950 px-2 py-0.5 rounded border border-brand-500/30">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="pt-4 border-t border-navy-800 flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={testimonialsData[reviewSlideIndex].avatar}
+                          alt={testimonialsData[reviewSlideIndex].name}
+                          className="w-12 h-12 rounded-xl object-cover border-2 border-brand-500 shadow-md"
+                        />
+                        <div>
+                          <div className="font-display font-bold text-sm text-white">{testimonialsData[reviewSlideIndex].name}</div>
+                          <div className="text-xs text-brand-400">{testimonialsData[reviewSlideIndex].role} • {testimonialsData[reviewSlideIndex].school}</div>
+                          <div className="text-[10px] text-slate-400">{testimonialsData[reviewSlideIndex].location} ({testimonialsData[reviewSlideIndex].studentsCount})</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={prevReview}
+                          className="p-2.5 rounded-xl bg-navy-800 hover:bg-brand-600 text-white transition-colors"
+                          aria-label="Previous review"
+                        >
+                          ◀
+                        </button>
+                        <button
+                          onClick={nextReview}
+                          className="p-2.5 rounded-xl bg-navy-800 hover:bg-brand-600 text-white transition-colors"
+                          aria-label="Next review"
+                        >
+                          ▶
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Indicator Dots */}
+                  <div className="flex justify-center gap-2">
+                    {testimonialsData.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setReviewSlideIndex(i)}
+                        className={`rounded-full transition-all ${reviewSlideIndex === i ? 'w-6 h-2 bg-brand-500' : 'w-2 h-2 bg-navy-700'
+                          }`}
+                      />
+                    ))}
+                  </div>
+
+                </div>
+
+              </div>
+            )}
+
+            {/* --- ABOUT PAGE --- */}
+            {activePage === 'about' && (
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+                <div className="max-w-3xl space-y-4">
+                  <span className="text-xs font-bold text-brand-600 uppercase">Our Story</span>
+                  <h1 className="font-display font-extrabold text-3xl sm:text-5xl text-navy-950">
+                    Shaping Institutional Identity Through Exceptional Apparel
+                  </h1>
+                  <p className="text-slate-600 text-sm leading-relaxed">
+                    Founded in 2011, Akshay Garments has grown into India's trusted school uniform manufacturer, combining modern textile technology with old-world tailoring discipline.
+                  </p>
+                </div>
+
+                <div className="bg-navy-950 text-white p-8 sm:p-12 rounded-3xl grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+                  {siteConfig.stats.map((s, idx) => (
+                    <div key={idx}>
+                      <div className="font-display font-black text-3xl sm:text-4xl text-gold-400">{s.value}</div>
+                      <div className="text-xs text-slate-300 mt-1">{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* --- CONTACT PAGE --- */}
+            {activePage === 'contact' && (
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+                <div>
+                  <h1 className="font-display font-extrabold text-3xl text-navy-950">Contact Our Sales Desk</h1>
+                  <p className="text-slate-500 text-xs sm:text-sm mt-1">Get in touch for institutional tenders, fabric swatch boxes, or sizing consultations.</p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                  <div className="lg:col-span-5 bg-white p-6 rounded-3xl border border-slate-200 space-y-4">
+                    <h3 className="font-display font-bold text-lg text-navy-950">Direct Contact</h3>
+                    <div className="text-xs space-y-3 text-slate-600">
+                      <div><strong>Phone:</strong> {siteConfig.contact.phone}</div>
+                      <div><strong>Email:</strong> {siteConfig.contact.email}</div>
+                      <div><strong>Instagram:</strong> <a href={siteConfig.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="text-pink-600 font-bold hover:underline">@akshaygarments_uniforms</a></div>
+                      <div><strong>Address:</strong> {siteConfig.contact.address.line1}, {siteConfig.contact.address.line2}, {siteConfig.contact.address.city}, {siteConfig.contact.address.state} - {siteConfig.contact.address.postalCode}</div>
+                      <div><strong>Working Hours:</strong> {siteConfig.contact.businessHours}</div>
+                    </div>
+                  </div>
+
+                  <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm">
+                    {formSubmitted ? (
+                      <div className="text-center py-8 space-y-3">
+                        <div className="text-4xl">🎉</div>
+                        <h4 className="font-display font-bold text-xl text-navy-950">Enquiry Received!</h4>
+                        <p className="text-xs text-slate-600">Our uniform coordinator will reach out to you within 2-4 hours.</p>
+                      </div>
+                    ) : (
+                      <form onSubmit={handleQuoteSubmit} className="space-y-4 text-xs">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block font-bold mb-1">Your Name *</label>
+                            <input required type="text" placeholder="Dr. Patel" className="w-full p-2.5 bg-slate-50 border rounded-xl" />
+                          </div>
+                          <div>
+                            <label className="block font-bold mb-1">Phone Number *</label>
+                            <input required type="tel" placeholder="+91 6301050642" className="w-full p-2.5 bg-slate-50 border rounded-xl" />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block font-bold mb-1">School Name *</label>
+                          <input required type="text" placeholder="St. Xavier's International School" className="w-full p-2.5 bg-slate-50 border rounded-xl" />
+                        </div>
+                        <div>
+                          <label className="block font-bold mb-1">Estimated Student Count</label>
+                          <input type="text" placeholder="300 Students" className="w-full p-2.5 bg-slate-50 border rounded-xl" />
+                        </div>
+                        <button type="submit" className="w-full py-3 bg-brand-600 text-white font-bold uppercase rounded-xl">
+                          Submit School Enquiry
+                        </button>
+                      </form>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* --- FAVORITES PAGE --- */}
+            {activePage === 'favorites' && (
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h1 className="font-display font-extrabold text-3xl text-navy-950">Saved Wishlist ({favorites.length})</h1>
+                    <p className="text-slate-500 text-xs sm:text-sm">Review your shortlisted uniforms and garments.</p>
+                  </div>
+                  {favorites.length > 0 && (
+                    <button onClick={() => setFavorites([])} className="text-xs text-red-500 font-bold">
+                      Clear All
+                    </button>
+                  )}
+                </div>
+
+                {favorites.length === 0 ? (
+                  <div className="bg-white p-12 rounded-3xl text-center border border-slate-200 space-y-3">
+                    <div className="text-4xl">❤️</div>
+                    <h3 className="font-bold text-lg text-navy-950">Your Wishlist is Empty</h3>
+                    <p className="text-xs text-slate-500">Shortlist garments while browsing to view them here.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {favorites.map((item) => (
+                      <div key={item.id} className="bg-white rounded-2xl border p-4 flex flex-col justify-between space-y-3">
+                        <div className="aspect-[4/3] rounded-xl overflow-hidden bg-slate-100">
+                          <img src={item.images?.[0] || item.image} alt={item.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-base text-navy-950">{item.name}</h4>
+                          <p className="text-xs text-slate-500 line-clamp-2 mt-1">{item.shortDesc || item.description}</p>
+                        </div>
+                        <div className="pt-2 border-t flex justify-between items-center">
+                          <button onClick={() => toggleFavorite(item)} className="text-xs text-red-500 font-semibold">
+                            Remove
+                          </button>
+                          <button onClick={() => setQuoteModalData({ title: item.name, type: 'item' })} className="px-3 py-1 bg-brand-600 text-white text-xs font-bold rounded-lg">
+                            Quote
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+          </main>
+
+          {/* Footer */}
+          <footer className="bg-navy-950 text-slate-400 py-12 px-4 sm:px-6 lg:px-8 border-t border-navy-900 text-xs">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+              <div>
+                <div className="font-display font-black text-lg text-white">AKSHAY GARMENTS</div>
+                <p className="text-[11px] text-slate-500 mt-1">© {new Date().getFullYear()} Akshay Garments. All Rights Reserved.</p>
+              </div>
+              <div className="flex gap-4">
+                {navItems.map((n) => (
+                  <button key={n.id} onClick={() => setActivePage(n.id)} className="hover:text-white">
+                    {n.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </footer>
+
+          {/* Floating WhatsApp Button */}
+          <a
+            href={`https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent('Hello Akshay Garments! I would like to enquire about school uniforms.')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed bottom-6 left-6 z-40 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase rounded-full shadow-2xl flex items-center gap-2"
+          >
+            <span>💬</span>
+            <span className="hidden sm:inline">WhatsApp Us</span>
+          </a>
+
+          {/* Global Search Modal */}
+          {isSearchOpen && (
+            <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-navy-950/80 backdrop-blur-md">
+              <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl p-6 space-y-4">
+                <div className="flex justify-between items-center pb-2 border-b">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search school shirts, blazers, pants, uniform models..."
+                    className="w-full text-base font-medium focus:outline-none"
+                    autoFocus
+                  />
+                  <button onClick={() => setIsSearchOpen(false)} className="text-slate-400 hover:text-slate-700">✕</button>
+                </div>
+                <div className="max-h-60 overflow-y-auto space-y-2 text-xs">
+                  {productsData.filter(i => i.name.toLowerCase().includes(searchQuery.toLowerCase())).map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => {
+                        setIsSearchOpen(false);
+                        setQuoteModalData({ title: item.name, type: 'search-item' });
+                      }}
+                      className="p-2 hover:bg-slate-50 rounded-lg cursor-pointer flex justify-between"
+                    >
+                      <span className="font-bold text-slate-800">{item.name}</span>
+                      <span className="text-slate-400">{item.category}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Quote Modal */}
+          {quoteModalData && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-md">
+              <div className="w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 space-y-4 relative shadow-2xl animate-slide-up">
+                <button onClick={() => setQuoteModalData(null)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-700">✕</button>
+                <h3 className="font-display font-bold text-xl text-navy-950">Request Institutional Quote</h3>
+                <p className="text-xs text-slate-500">Regarding: <strong className="text-brand-700">{quoteModalData.title}</strong></p>
+
+                {formSubmitted ? (
+                  <div className="text-center py-6 space-y-2">
+                    <div className="text-3xl">✅</div>
+                    <div className="font-bold text-base text-navy-950">Quote Request Dispatched!</div>
+                    <p className="text-xs text-slate-500">We will contact you shortly.</p>
+                    <button onClick={() => { setFormSubmitted(false); setQuoteModalData(null); }} className="mt-2 px-4 py-2 bg-slate-100 rounded-xl text-xs font-bold">
+                      Close
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleQuoteSubmit} className="space-y-3 text-xs">
+                    <div>
+                      <label className="block font-bold mb-1">Your Name *</label>
+                      <input required type="text" placeholder="Dr. Sharma" className="w-full p-2.5 bg-slate-50 border rounded-xl" />
+                    </div>
+                    <div>
+                      <label className="block font-bold mb-1">Phone / WhatsApp Number *</label>
+                      <input required type="tel" placeholder="+91 98765 43210" className="w-full p-2.5 bg-slate-50 border rounded-xl" />
+                    </div>
+                    <div>
+                      <label className="block font-bold mb-1">School Name *</label>
+                      <input required type="text" placeholder="St. Peter's Academy" className="w-full p-2.5 bg-slate-50 border rounded-xl" />
+                    </div>
+                    <button type="submit" className="w-full py-3 bg-brand-600 text-white font-bold uppercase rounded-xl">
+                      Submit Request
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          )}
+
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+
+</html>
