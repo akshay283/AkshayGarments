@@ -26,7 +26,10 @@ import {
   Check, 
   TrendingUp, 
   Inbox, 
-  ArrowLeft
+  ArrowLeft,
+  Plus,
+  X,
+  Sparkles
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { 
@@ -40,6 +43,8 @@ import {
 import { 
   getStoredReviews, 
   deleteStoredReview, 
+  clearAllStoredReviews,
+  saveStoredReview,
   copyReviewLinkToClipboard, 
   REVIEW_UPDATE_EVENT 
 } from '../utils/reviewStorage';
@@ -89,6 +94,22 @@ export const Admin = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('All'); // 'All' | 'New' | 'Contacted' | 'In Progress' | 'Completed'
   
+  // Review Filter & Add States
+  const [reviewSearchQuery, setReviewSearchQuery] = useState('');
+  const [reviewRatingFilter, setReviewRatingFilter] = useState('All');
+  const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false);
+  const [newReviewForm, setNewReviewForm] = useState({
+    name: '',
+    role: 'Principal',
+    school: '',
+    location: '',
+    rating: 5,
+    title: '',
+    content: '',
+    tags: 'School Shirts, Pants, Blazers',
+    studentsCount: ''
+  });
+
   // Dialog States
   const [itemToDelete, setItemToDelete] = useState(null); // { type: 'enquiry' | 'review', item: obj }
   const [copiedLink, setCopiedLink] = useState(false);
@@ -246,6 +267,41 @@ export const Admin = () => {
       (enq.requirement && enq.requirement.toLowerCase().includes(query));
     return matchesStatus && matchesQuery;
   });
+
+  // Filtered Reviews
+  const filteredReviews = reviews.filter((rev) => {
+    const ratingMatches = reviewRatingFilter === 'All' || Math.round(Number(rev.rating) || 5) === Number(reviewRatingFilter);
+    const query = reviewSearchQuery.toLowerCase().trim();
+    const matchesQuery = !query ||
+      (rev.name && rev.name.toLowerCase().includes(query)) ||
+      (rev.school && rev.school.toLowerCase().includes(query)) ||
+      (rev.title && rev.title.toLowerCase().includes(query)) ||
+      (rev.content && rev.content.toLowerCase().includes(query)) ||
+      (rev.location && rev.location.toLowerCase().includes(query));
+    return ratingMatches && matchesQuery;
+  });
+
+  const handleAdminAddReview = (e) => {
+    e.preventDefault();
+    if (!newReviewForm.name || !newReviewForm.content) return;
+    saveStoredReview({
+      ...newReviewForm,
+      tags: newReviewForm.tags ? newReviewForm.tags.split(',').map(t => t.trim()).filter(Boolean) : ['Uniform Manufacturing']
+    });
+    setIsAddReviewModalOpen(false);
+    setNewReviewForm({
+      name: '',
+      role: 'Principal',
+      school: '',
+      location: '',
+      rating: 5,
+      title: '',
+      content: '',
+      tags: 'School Shirts, Pants, Blazers',
+      studentsCount: ''
+    });
+    refreshData();
+  };
 
   const newEnquiriesCount = enquiries.filter(e => e.status === 'New').length;
 
@@ -938,24 +994,32 @@ export const Admin = () => {
           </div>
         ) : (
           /* ============================================================ */
-          /* REVIEWS TAB                                                  */
+          /* REVIEWS TAB (Admin Exclusive Review Control)                 */
           /* ============================================================ */
           <div className="space-y-6">
             
             <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
                 <h3 className="font-display font-bold text-lg text-navy-950">
-                  Published Customer Reviews ({reviews.length})
+                  Customer Reviews Management ({reviews.length})
                 </h3>
                 <p className="text-xs text-slate-500">
-                  These reviews are visible on the website homepage slider.
+                  Manage, moderate, delete, or manually add reviews displayed on the website slider.
                 </p>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <button
+                  onClick={() => setIsAddReviewModalOpen(true)}
+                  className="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-colors cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add New Review</span>
+                </button>
+
                 <button
                   onClick={handleCopyReviewLink}
-                  className="px-4 py-2 bg-navy-950 hover:bg-brand-600 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-navy-950 hover:bg-navy-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                   {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-gold-400" />}
                   <span>Copy Client Review Link</span>
@@ -963,20 +1027,57 @@ export const Admin = () => {
               </div>
             </div>
 
-            {reviews.length === 0 ? (
+            {/* Review Search & Rating Filter Bar */}
+            <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+              {/* Search Box */}
+              <div className="relative w-full md:w-80">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Search reviews by name, school, keywords..."
+                  value={reviewSearchQuery}
+                  onChange={(e) => setReviewSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-navy-950 placeholder:text-slate-400 focus:outline-none focus:border-brand-500"
+                />
+              </div>
+
+              {/* Rating Filter */}
+              <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                <span className="text-xs font-bold text-slate-400 uppercase mr-1">Rating:</span>
+                {['All', '5', '4', '3'].map((r) => (
+                  <button
+                    key={r}
+                    onClick={() => setReviewRatingFilter(r)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      reviewRatingFilter === r
+                        ? 'bg-navy-950 text-white shadow-sm'
+                        : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+                    }`}
+                  >
+                    {r === 'All' ? 'All Ratings' : `${r} ★`}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {filteredReviews.length === 0 ? (
               <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-3">
                 <div className="w-12 h-12 mx-auto rounded-2xl bg-gold-50 text-gold-600 flex items-center justify-center">
                   <Star className="w-6 h-6 fill-gold-400" />
                 </div>
-                <h4 className="font-display font-bold text-lg text-navy-950">No Reviews Submitted Yet</h4>
+                <h4 className="font-display font-bold text-lg text-navy-950">
+                  {reviews.length === 0 ? 'No Reviews Submitted Yet' : 'No Reviews Match Your Search'}
+                </h4>
                 <p className="text-xs text-slate-500 max-w-md mx-auto">
-                  Send your review link to school principals and clients. Submitted reviews will appear here and on the homepage.
+                  {reviews.length === 0
+                    ? 'Send your review link to school principals and clients or click "Add New Review" above to insert feedback manually.'
+                    : 'Try changing your search terms or rating filter above.'}
                 </p>
               </div>
             ) : (
               <div className="space-y-4">
-                {reviews.map((rev) => (
-                  <div key={rev.id} className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                {filteredReviews.map((rev) => (
+                  <div key={rev.id} className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-slate-300 transition-colors">
                     <div className="space-y-2 flex-1">
                       <div className="flex items-center gap-2">
                         <div className="flex text-gold-500">
@@ -1019,7 +1120,8 @@ export const Admin = () => {
                     <div className="shrink-0">
                       <button
                         onClick={() => setItemToDelete({ type: 'review', item: rev })}
-                        className="px-4 py-2 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                        className="px-4 py-2 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+                        title="Permanently delete this review"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                         <span>Delete Review</span>
@@ -1027,6 +1129,23 @@ export const Admin = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+
+            {/* Clear All Reviews Option */}
+            {reviews.length > 0 && (
+              <div className="pt-4 text-right">
+                <button
+                  onClick={() => {
+                    if (window.confirm('Are you sure you want to delete all stored customer reviews? This action cannot be undone.')) {
+                      clearAllStoredReviews();
+                      refreshData();
+                    }
+                  }}
+                  className="text-xs text-rose-500 hover:text-rose-700 font-semibold underline cursor-pointer"
+                >
+                  Clear All {reviews.length} Reviews
+                </button>
               </div>
             )}
 
@@ -1070,6 +1189,153 @@ export const Admin = () => {
                 <span>Yes, Delete</span>
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Admin Add Review Modal Dialog */}
+      {isAddReviewModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-5 shadow-2xl border border-slate-200 animate-slide-up my-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2 text-brand-700">
+                <Sparkles className="w-5 h-5 text-gold-500" />
+                <h4 className="font-display font-bold text-lg text-navy-950">
+                  Add Verified Client Review
+                </h4>
+              </div>
+              <button
+                onClick={() => setIsAddReviewModalOpen(false)}
+                className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAdminAddReview} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">Client / Principal Name *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Dr. Rajesh Sharma"
+                    value={newReviewForm.name}
+                    onChange={(e) => setNewReviewForm({ ...newReviewForm, name: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-navy-950 focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">Designation / Role</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Principal, Admin Lead"
+                    value={newReviewForm.role}
+                    onChange={(e) => setNewReviewForm({ ...newReviewForm, role: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-navy-950 focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">School / Institution Name</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Delhi Public School"
+                    value={newReviewForm.school}
+                    onChange={(e) => setNewReviewForm({ ...newReviewForm, school: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-navy-950 focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">City / Location</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Hyderabad, Telangana"
+                    value={newReviewForm.location}
+                    onChange={(e) => setNewReviewForm({ ...newReviewForm, location: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-navy-950 focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">Rating (1 to 5 Stars)</label>
+                  <select
+                    value={newReviewForm.rating}
+                    onChange={(e) => setNewReviewForm({ ...newReviewForm, rating: Number(e.target.value) })}
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-navy-950 focus:outline-none focus:border-brand-500"
+                  >
+                    <option value={5}>⭐⭐⭐⭐⭐ (5.0 - Excellent)</option>
+                    <option value={4}>⭐⭐⭐⭐ (4.0 - Very Good)</option>
+                    <option value={3}>⭐⭐⭐ (3.0 - Good)</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">Student Strength</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 1,200+ Students"
+                    value={newReviewForm.studentsCount}
+                    onChange={(e) => setNewReviewForm({ ...newReviewForm, studentsCount: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-navy-950 focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700">Review Headline / Title</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Exceptional Stitching Quality and Timely Delivery"
+                  value={newReviewForm.title}
+                  onChange={(e) => setNewReviewForm({ ...newReviewForm, title: e.target.value })}
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-navy-950 focus:outline-none focus:border-brand-500"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700">Review Testimonial Text *</label>
+                <textarea
+                  required
+                  rows={3}
+                  placeholder="Write the review feedback..."
+                  value={newReviewForm.content}
+                  onChange={(e) => setNewReviewForm({ ...newReviewForm, content: e.target.value })}
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-navy-950 focus:outline-none focus:border-brand-500"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700">Manufactured Items / Tags (comma separated)</label>
+                <input
+                  type="text"
+                  placeholder="School Shirts, Pants, Blazers, Sports Kit"
+                  value={newReviewForm.tags}
+                  onChange={(e) => setNewReviewForm({ ...newReviewForm, tags: e.target.value })}
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-navy-950 focus:outline-none focus:border-brand-500"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setIsAddReviewModalOpen(false)}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl shadow-md transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Publish Review</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

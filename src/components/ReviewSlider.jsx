@@ -1,33 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Star, 
-  ChevronLeft, 
-  ChevronRight, 
-  Quote, 
-  CheckCircle2, 
-  Award, 
-  PenTool, 
-  Copy, 
-  Check, 
-  MessageCircle, 
-  Trash2, 
-  Settings, 
-  AlertTriangle
+import {
+  Star,
+  ChevronLeft,
+  ChevronRight,
+  Quote,
+  CheckCircle2,
+  Award,
+  PenTool,
+  Copy,
+  Check
 } from 'lucide-react';
-import { 
-  getStoredReviews, 
-  REVIEW_UPDATE_EVENT, 
-  getReviewWhatsAppShareUrl, 
-  copyReviewLinkToClipboard,
-  deleteStoredReview
+import {
+  getStoredReviews,
+  REVIEW_UPDATE_EVENT,
+  copyReviewLinkToClipboard
 } from '../utils/reviewStorage';
 import { SubmitReviewModal } from './SubmitReviewModal';
-import { ManageReviewsModal } from './ManageReviewsModal';
 import { useQuoteModal } from '../context/QuoteModalContext';
 
-export const ReviewSlider = ({ 
-  title = "Verified Customer Reviews & Feedback", 
-  subtitle = "Direct feedback from Principals, Administrative Officers, Event Coordinators & Clients" 
+export const ReviewSlider = ({
+  title = "Verified Customer Reviews & Feedback",
+  subtitle = "Direct feedback from Principals, Administrative Officers, Event Coordinators & Clients"
 }) => {
   // Initialize with stored reviews immediately to prevent any empty render flash
   const [reviews, setReviews] = useState(() => {
@@ -41,10 +34,8 @@ export const ReviewSlider = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [isManageModalOpen, setIsManageModalOpen] = useState(false);
-  const [reviewToDeleteDirect, setReviewToDeleteDirect] = useState(null);
   const [copiedLink, setCopiedLink] = useState(false);
-  
+
   const autoPlayRef = useRef(null);
   const { openQuoteModal } = useQuoteModal();
 
@@ -82,15 +73,13 @@ export const ReviewSlider = ({
         const hash = (window.location.hash || '').toLowerCase();
         const search = (window.location.search || '').toLowerCase();
         if (
-          hash === '#write-review' || 
-          hash === '#review' || 
+          hash === '#write-review' ||
+          hash === '#review' ||
           hash === '#reviews' ||
           search.includes('review=true') ||
           search.includes('action=review')
         ) {
           setIsReviewModalOpen(true);
-        } else if (hash === '#manage-reviews') {
-          setIsManageModalOpen(true);
         }
       }
     };
@@ -144,18 +133,12 @@ export const ReviewSlider = ({
     }
   };
 
-  const handleDeleteActiveReview = (id) => {
-    deleteStoredReview(id);
-    setReviewToDeleteDirect(null);
-    loadReviews();
-  };
-
   // Safe active review resolution
   const activeReview = (totalReviews > 0 && reviews[currentIndex]) ? reviews[currentIndex] : (reviews[0] || null);
   const safeRating = Math.min(5, Math.max(1, Math.round(Number(activeReview?.rating) || 5)));
 
   return (
-    <section 
+    <section
       id="reviews-section"
       className="relative bg-gradient-to-b from-slate-900 via-navy-950 to-navy-900 text-white py-16 sm:py-24 rounded-3xl overflow-hidden border border-navy-800 shadow-2xl"
       onMouseEnter={() => setIsAutoPlaying(false)}
@@ -167,7 +150,7 @@ export const ReviewSlider = ({
       <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-400 text-xs font-bold uppercase tracking-wider">
@@ -182,79 +165,22 @@ export const ReviewSlider = ({
           <p className="text-slate-300 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
             {subtitle}
           </p>
-
-          {/* Action Bar: Write Review, Copy Link, WhatsApp & Manage Reviews */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-3">
-            
-            {/* Write Review Button */}
-            <button
-              onClick={() => setIsReviewModalOpen(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white rounded-xl text-xs font-bold shadow-md shadow-brand-500/20 transition-all transform active:scale-95 cursor-pointer"
-            >
-              <PenTool className="w-3.5 h-3.5" />
-              <span>Write a Review</span>
-            </button>
-
-            {/* Copy Shareable Link Button */}
-            <button
-              onClick={handleCopyLink}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-navy-800/90 hover:bg-navy-700 text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-navy-700 transition-all cursor-pointer"
-              title="Copy shareable link to send to clients via WhatsApp or Email"
-            >
-              {copiedLink ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-400">Review Link Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3.5 h-3.5 text-gold-400" />
-                  <span>Copy Review Link</span>
-                </>
-              )}
-            </button>
-
-            {/* WhatsApp Share Button */}
-            <a
-              href={getReviewWhatsAppShareUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-700/80 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold border border-emerald-600/50 transition-all"
-              title="Send review request link on WhatsApp"
-            >
-              <MessageCircle className="w-3.5 h-3.5" />
-              <span>Share on WhatsApp</span>
-            </a>
-
-            {/* Owner Control: Manage Reviews Button */}
-            {totalReviews > 0 && (
-              <button
-                onClick={() => setIsManageModalOpen(true)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-navy-800/60 hover:bg-rose-950/60 text-slate-400 hover:text-rose-300 rounded-xl text-xs font-medium border border-navy-700/80 hover:border-rose-700/50 transition-all cursor-pointer"
-                title="Owner Control: Delete or moderate reviews"
-              >
-                <Settings className="w-3.5 h-3.5" />
-                <span>Manage / Delete ({totalReviews})</span>
-              </button>
-            )}
-
-          </div>
         </div>
 
         {/* Dynamic Presentation: Empty State OR Live Reviews Slider */}
         {totalReviews === 0 || !activeReview ? (
           /* --- CLEAN EMPTY STATE (When 0 reviews exist) --- */
           <div className="max-w-2xl mx-auto bg-navy-900/80 backdrop-blur-xl border border-dashed border-navy-700 rounded-3xl p-8 sm:p-12 text-center shadow-2xl relative">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 mb-4 shadow-inner">
+            {/* <div className="w-16 h-16 mx-auto rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 mb-4 shadow-inner">
               <Star className="w-8 h-8 fill-gold-400" />
-            </div>
+            </div> */}
 
             <h3 className="font-display font-black text-xl sm:text-2xl text-white mb-2">
-              Be the First to Review Akshay Garments!
+              Review Akshay Garments!
             </h3>
 
             <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto mb-6">
-              Are you an institutional client, school principal, coordinator, or buyer? 
+              Are you an institutional client, school principal, coordinator, or buyer?
               Click below to submit your rating and review, or share the direct link with your committee.
             </p>
 
@@ -284,18 +210,13 @@ export const ReviewSlider = ({
                 )}
               </button>
             </div>
-
-            {/* Note on Netlify deployment */}
-            <div className="mt-8 pt-6 border-t border-navy-800/80 text-[11px] text-slate-400">
-              💡 <span className="font-semibold text-slate-300">Tip:</span> When you deploy this website to Netlify, clicking <strong>"Copy Review Link"</strong> will generate your live Netlify URL (e.g. <code className="bg-navy-950 px-1.5 py-0.5 rounded text-brand-300">https://your-site.netlify.app/#write-review</code>) which opens the review form directly for any recipient.
-            </div>
           </div>
         ) : (
           /* --- REVIEWS SLIDER (When >= 1 reviews exist) --- */
           <div className="max-w-4xl mx-auto">
-            
+
             <div className="bg-navy-900/80 backdrop-blur-xl border border-navy-700/80 rounded-3xl p-6 sm:p-12 shadow-2xl relative transition-all duration-500">
-              
+
               {/* Top Row: Rating Stars + Verified Badge + Delete Button */}
               <div className="flex items-center justify-between gap-4 mb-6">
                 <div className="flex items-center gap-1.5">
@@ -312,16 +233,6 @@ export const ReviewSlider = ({
                     <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                     <span>Verified Review</span>
                   </span>
-
-                  {/* Direct Delete Button for Owner */}
-                  <button
-                    onClick={() => setReviewToDeleteDirect(activeReview)}
-                    className="p-1.5 rounded-lg bg-navy-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-navy-700 hover:border-rose-600/50 transition-colors"
-                    title="Delete this review"
-                    aria-label="Delete review"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
 
                   <Quote className="w-8 h-8 sm:w-10 sm:h-10 text-brand-500/20" />
                 </div>
@@ -353,7 +264,7 @@ export const ReviewSlider = ({
 
               {/* Author Profile Footer */}
               <div className="pt-6 border-t border-navy-800 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                
+
                 <div className="flex items-center gap-4">
                   {activeReview?.avatar ? (
                     <img
@@ -427,11 +338,10 @@ export const ReviewSlider = ({
                     key={idx}
                     onClick={() => goToSlide(idx)}
                     aria-label={`Go to slide ${idx + 1}`}
-                    className={`transition-all duration-300 rounded-full cursor-pointer ${
-                      currentIndex === idx
-                        ? 'w-8 h-2.5 bg-brand-500 shadow-md shadow-brand-500/50'
-                        : 'w-2.5 h-2.5 bg-navy-700 hover:bg-slate-500'
-                    }`}
+                    className={`transition-all duration-300 rounded-full cursor-pointer ${currentIndex === idx
+                      ? 'w-8 h-2.5 bg-brand-500 shadow-md shadow-brand-500/50'
+                      : 'w-2.5 h-2.5 bg-navy-700 hover:bg-slate-500'
+                      }`}
                   />
                 ))}
               </div>
@@ -439,20 +349,6 @@ export const ReviewSlider = ({
 
           </div>
         )}
-
-        {/* Bottom Quick Action Banner */}
-        <div className="mt-14 max-w-2xl mx-auto text-center p-6 bg-navy-900/60 rounded-2xl border border-navy-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-left space-y-0.5">
-            <div className="text-xs font-bold text-white">Join 85+ Top Institutions Across India</div>
-            <div className="text-[11px] text-slate-400">Request sample swatches and direct manufacturer quotes for your school or event.</div>
-          </div>
-          <button
-            onClick={() => openQuoteModal({ type: 'bulk-school', notes: 'Inquiring after reading partner testimonials' })}
-            className="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md shrink-0 cursor-pointer"
-          >
-            Get School Quote
-          </button>
-        </div>
 
       </div>
 
@@ -465,54 +361,6 @@ export const ReviewSlider = ({
           setCurrentIndex(0);
         }}
       />
-
-      {/* Review Management / Deletion Modal */}
-      <ManageReviewsModal
-        isOpen={isManageModalOpen}
-        onClose={() => setIsManageModalOpen(false)}
-        reviews={reviews}
-        onReviewsChanged={() => {
-          loadReviews();
-          setCurrentIndex(0);
-        }}
-      />
-
-      {/* Direct Delete Confirmation Modal for Active Slide */}
-      {reviewToDeleteDirect && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-navy-950/90 backdrop-blur-sm animate-fade-in">
-          <div className="bg-navy-900 border border-rose-600/50 rounded-2xl p-6 max-w-md w-full space-y-4 shadow-2xl">
-            <div className="flex items-center gap-3 text-rose-400">
-              <div className="p-2.5 rounded-xl bg-rose-950/80 border border-rose-600/40">
-                <AlertTriangle className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="font-display font-bold text-base text-white">Delete This Review?</h4>
-                <p className="text-xs text-slate-400">This action cannot be undone.</p>
-              </div>
-            </div>
-
-            <p className="text-xs text-slate-300 bg-navy-950 p-3.5 rounded-xl border border-navy-800">
-              Are you sure you want to permanently remove the review from <strong>"{reviewToDeleteDirect.name}"</strong> ({reviewToDeleteDirect.school})?
-            </p>
-
-            <div className="flex items-center justify-end gap-3 pt-2">
-              <button
-                onClick={() => setReviewToDeleteDirect(null)}
-                className="px-4 py-2 bg-navy-800 hover:bg-navy-700 text-slate-300 font-semibold text-xs rounded-xl transition-colors cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => handleDeleteActiveReview(reviewToDeleteDirect.id)}
-                className="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-md transition-colors flex items-center gap-1.5 cursor-pointer"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Yes, Delete</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
     </section>
   );

@@ -14,6 +14,7 @@ import { Catalog } from './pages/Catalog';
 import { About } from './pages/About';
 import { Contact } from './pages/Contact';
 import { Favorites } from './pages/Favorites';
+import { ReviewPage } from './pages/ReviewPage';
 import { Admin } from './pages/Admin';
 import { NotFound } from './pages/NotFound';
 
@@ -78,11 +79,11 @@ function MainLayout() {
           />
           <Route 
             path="/review" 
-            element={<Navigate to="/" replace />} 
+            element={<ReviewPage />} 
           />
           <Route 
             path="/reviews" 
-            element={<Navigate to="/" replace />} 
+            element={<ReviewPage />} 
           />
           <Route 
             path="/admin" 

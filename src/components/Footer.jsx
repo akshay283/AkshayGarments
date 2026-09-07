@@ -209,6 +209,13 @@ export const Footer = () => {
             >
               Hosted on Netlify
             </a>
+            <span>•</span>
+            <Link
+              to="/admin"
+              className="text-slate-500 hover:text-gold-400 font-medium transition-colors"
+            >
+              Admin Portal
+            </Link>
           </div>
         </div>
       </div>

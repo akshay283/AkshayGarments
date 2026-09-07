@@ -81,9 +81,9 @@ export const saveStoredReview = (reviewData) => {
  * Seamlessly resolves to the current Netlify domain, custom domain, or localhost.
  */
 export const getReviewShareUrl = () => {
-  if (typeof window === 'undefined') return 'https://akshaygarments.netlify.app/#write-review';
+  if (typeof window === 'undefined') return 'https://akshaygarments.netlify.app/review';
   const origin = window.location.origin;
-  return `${origin}/#write-review`;
+  return `${origin}/review`;
 };
 
 /**
